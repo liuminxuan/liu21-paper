@@ -898,8 +898,8 @@ Fig.~\ref{space} (c) and Fig.~\ref{space} (d) show the vehicle on the non-throug
 \end{figure}
  
 %  (\verb!v![$vid$] : $lid$\verb!,!$vstat$\verb!,!$t$\verb!,!$lt$)
- 
-In the specification, we use four observable components:
+In this paper, a state is expressed as a soup of observable components.
+To formalize the protocol, we use four observable components as follows:
 \begin{itemize}
     \item (\verb!v[!$id$\verb!]:!$position$\verb!,!$vstat$) - $id$ is an ID (a nature number) of vehicle or space, $position$ is the lane (through lane or non-through lane) which the vehicle or space $id$ is located, $vstate$ is the space or the status of the vehicle $id$. Initially, $vstate$ is \verb!space! if it is the space, \verb!running! if it is the vehicle.
     \item (\verb!lane[!$position$\verb!]:!$q$) - $position$ is the through lane or non-through lane and $q$ is a queue of vehicle (natural numbers) or space. Initially, $q$ is \verb!empq!
