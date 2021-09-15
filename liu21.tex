@@ -572,9 +572,10 @@ represents an initial state of the state machine.
 A merge point is visualized in Fig.~\ref{mergePoint_fig}, which is the intersection of two lanes: through lane and non-through lane.
 We suppose that each lane is one way direction.
 As in the Figure, vehicles running on the through lane cannot go from left to right, while vehicles arriving from the non-through lane can only turn to run on (2).
+Hereinafter, let us use a through lane vehicle (or non-through lane vehicle) to talk about a vehicle running on the through lane (or vehicle running on the non-through lane, respectively). 
 %If through lane and non-through lane meet at the road intersection, we regard the intersection as merge point. 
-Encountering the merge point, a vehicle running on the through lane has higher priority than a vehicle arriving from the non-through lane because the traffic volume of the through lane is usually greater than that of the non-through lane. 
-In other words, a vehicle running on the non-through lane should let another vehicle running on the through lane crosses the merge point first in order to guarantee that traffic can run efficiently and there is no collision.
+Encountering the merge point, a through lane vehicle has higher priority than a vehicle arriving from the non-through lane because the traffic volume of the through lane is usually greater than that of the non-through lane. 
+In other words, a non-through lane vehicle should let another through lane vehicle crosses the merge point first in order to guarantee that traffic can run efficiently and there is no collision.
 The merge point must be controlled so that vehicles never collided with each other. 
 In other words, it must be ensured that there is at most one vehicle crossing the merge point.
 
@@ -587,27 +588,32 @@ In other words, it must be ensured that there is at most one vehicle crossing th
 \label{mergePoint_fig}
 \end{figure}
 
-S. Aoki and R. Rajkumar~\cite{10.1145/3055004.3055028} have proposed the protocol called merging protocol to prevent the collision in the merge point.
-The protocol has two kinds of versions for two traffic environments: only self-driving vehicles on the traffic (1), self-driving vehicles and human-driven vehicles on the traffic (2).
-In the paper, we mainly concentrate on the first version (1). 
-The protocol requires each self-driving vehicle containing systems, devices such as navigation system, sensors to get the necessary information for self-driving vehicle systems such as lane information.
-Further more, the authors assumes each vehicle uses technologies such as WAVE \cite{4346439,5888501}, GPS to communicate and get information from other vehicles.
-Please refer to the paper~\cite{10.1145/3055004.3055028} for details.
+To resolve the problem mentioned above, 
+S. Aoki and R. Rajkumar~\cite{10.1145/3055004.3055028} have proposed the protocol called merging protocol.
+%to prevent the collision in the merge point.
+The protocol has two versions corresponding to two traffic environments: (1) only self-driving vehicles on the traffic, (2) self-driving vehicles and human-driven vehicles on the traffic.
+In the present paper, we mainly concentrate on the first version (1). 
+The protocol requires each self-driving vehicle equiped with several necessary software systems such as navigation system or hardware devices such as sensors.
+%These equipments are required since the self-driving vehicle get the necessary information for  vehicle systems such as lane information.
+Further more, the authors also assumes each vehicle is able to uses some technologies such as WAVE \cite{4346439,5888501}, GPS to communication with other vehicles.
+%Please refer to the paper~\cite{10.1145/3055004.3055028} for details.
 %This protocol is designed for fully self-driving vehicle system which all the self-driving vehicle has a map database, A navigation system, an autonomous vehicle controller, a wireless communication interface, and a localization capability. 
 %Map database and navigation can recognize which lane the vehicle in. Autonomous vehicle controller is used to actuate the self-driving vehicle traverse the chosen path. 
 %The wireless interface is used to allow vehicles to send or receive messages. 
 %It also use some perception system like LIDAR or camera~\cite{6629559} to avoid some unexpected crashing situations. 
 
 %For fully self-driving vehicles crossing the merge point safely and efficiently, three priority states be designed: (i) Fully-priority state; (ii) Semi-priority state; and (iii) Fair state. 
-The protocol contains three states that are: fully-prioritized state, semi-prioritized state, and fair state.
+All vehicles participating in the protocol are controlled based on three system states: fully-prioritized state, semi-prioritized state, and fair state. 
+When the system is in a state, it can be changed to another state (e.g., from fully-prioritized state change to semi-prioritized state) by some trigger actions.
+Each of them is explained in the upcoming sub-sections.
 
 \subsection{Fully-prioritized state}
-Initially, non-through lane vehicles cannot intervene vehicles running on the through lane. 
-In other words, the non-through lane vehicles are allowed to enter the merge point only if no vehicle on the through lane is approaching the merge point.
-There are two cases that happen in fully-prioritized: 
+When the system is in a fully-prioritized state, vehicles running on the non-through lane cannot intervene those running on the through lane. 
+It means that a non-through lane vehicle is allowed to enter the merge point only if no vehicle on the through lane is approaching the merge point.
+Precisely, there are two cases that allow the non-through lane vehicle to do so:
 \begin{itemize}
-    \item The vehicles on the through lane are far away from the merge point or there is no vehicle on the through lane, at this time, non-though lane vehicles which approach the merge point are allowed to enter the merge point.
-    \item Two lanes have vehicles approaching the merge point, the vehicles on the non-through lane stop before the merge point and wait until all through lane vehicles which approach the merge point crossed the merge point. 
+    \item all vehicles running on the through lane are far away from the merge point or there is no vehicle on the through lane, or
+    \item two lanes have vehicles approaching the merge point, the vehicle on the non-through lane stops right before the merge point and waits until all through lane vehicles approaching the merge point crossed the merge point. 
 \end{itemize}
 
 
@@ -622,9 +628,9 @@ There are two cases that happen in fully-prioritized:
 
 \subsection{Semi-prioritized state}
 \label{semi-case}
-This state gives non-through lane vehicle to intervene the vehicle running on the through lane, if it finds there has enough space between two vehicles on the through lane. 
-In semi-prioritized state, vehicles on non-through lane can has a chance to enter the merge point even though some through lane vehicles are approaching the merge point. 
-If there exist space between two through lane vehicles which approaching the merge point, the non-through lane vehicle will use the space to enter the merge point. 
+When the system is in a semi-prioritized state, a non-through lane vehicle has a chance to enter the merge point even though there exists some through lane vehicles approaching the merge point. 
+%This state gives a vehicle running on the non-through lane permission to intervene the vehicle running on the through lane, if it finds there exists enough space between two through lane vehicles. 
+If there exists enough space between two through lane vehicles approaching the merge point, a non-through lane vehicle approaching the merge point can use that space to enter the intersection.
 %Semi-prioritized state gives vehicle a chance to enter the merge point although some through lane vehicles is approaching the merge point. If non-through lane vehicle detects it has enough space between two through lane vehicles which approaching the merge point, it will use the space to enter the merge point. 
 
 % \begin{figure}[h]
@@ -636,10 +642,10 @@ If there exist space between two through lane vehicles which approaching the mer
 % \end{figure}
 
 \subsection{Fair state}
-Fair state can be applied for the traffic in case the through lane is congested. 
-It allows through lane vehicle and non-though lane vehicle to enter the merge point alternately.
-In case the through lane is congested, the protocol moves to fair state.
-The state allows the vehicles on both lane enter the merge point alternately.
+The state of the system changes to a fair state if the traffic of the through lane is congested. 
+In this state, through lane vehicles and non-though lane vehicles are allowed to enter the merge point alternately.
+%In case the through lane is congested, the protocol moves to fair state.
+%The state allows the vehicles on both lane enter the merge point alternately.
 %If non-though lane vehicle find through lane is congested, the whole self-driving control system will move to Fair state.
 %This state allows non-through lane vehicle and through lane vehicle enter the merge point alternately like a zipped merge.
 
@@ -764,24 +770,17 @@ The state allows the vehicles on both lane enter the merge point alternately.
 % In the \textit{Autonomous Vehicle Protocol for Merge Points}, three functions implies three priority state of non-through lane vehicles. (i)High throughput function; (ii) Intervention function; (iii) Zipper merge function. 
 
 
-
-
-
-
-
-
-
-
- 
 \section{Abstract Merging Protocol for Self-Driving Vehicles}
  \label{sect_reviproto}
- 
-A merging protocol uses V2V communication and allows the self-driving vehicles merge into one lane from two different lanes. 
-Sending and receiving messages basing on network may not fully reliable because some data may lost during the transmission. 
-If one vehicle lose some messages sent by other vehicles, a serious collision may happen. 
-Furthermore, to make it more abstract, some information, such as vehicle speed, position on road, are ignored.
+% TODO: your abstract verion do nothing to resolve/mitigate the disadvantage problems mentioned here.  
+%A merging protocol uses V2V communication and allows the self-driving vehicles merge into one lane from two different lanes. 
+%Sending and receiving messages basing on network may not fully reliable because some data may lost during the transmission. 
+%If one vehicle lose some messages sent by other vehicles, a serious collision may happen. 
+%Furthermore, to make it more abstract, some information, such as vehicle speed, position on road, are ignored.
+Based on the merging protocol described in the last section, we abstract some parts to make another version namely abstract merging protocol ({\it a-merging protocol}).
+Our target is to conduct model checking to check that whether the protocol enjoy some desired properties such as mutual exclusion property (i.e., there is at most one vehicle crossing the merge point at any given time).
 We use two queues to manage the vehicles on two lanes, status represents the vehicle position.
-Therefore, basing on the \textit{merging protocol}, we designed a abstract version of the protocol called \textit{abstract merging protocol (a-merging protocol)}.
+%Therefore, basing on the \textit{merging protocol}, we designed a abstract version of the protocol called \textit{abstract merging protocol (a-merging protocol)}.
 
 %Therefore, basing on \textit{Autonomous Vehicle Protocol for Merge Points}, we designed a new protocol called \textit{Revised Autonomous Vehicle Protocol for Merge Points} .
 
@@ -866,13 +865,13 @@ On the other side, if it is non-through lane vehicle's turn, vehicle on non-thro
  
 \section{Formal Specification}
  \label{sect_formal}
- In the semi-prioritized state of the merging protocol, if there exists an enough space on through lane, a non-through lane vehicle can enter to the merge point.
- Therefore, in the specification, we use two queues for both lanes in which the element of the queue is a car or a space (space refers to enough space in our specification).
+In the semi-prioritized state of the merging protocol, if there exists an enough space on through lane, a non-through lane vehicle can enter to the merge point.
+Therefore, in the specification, we use two queues for both lanes in which the element of the queue is a car or a space (space refers to enough space in our specification).
  %From the \textit{Revised Autonomous Vehicle Protocol for Merge Points }, we know that in the Semi-priority state, a space can accommodate a car, so we can divide the road into many small squares, and each small square can accommodate a car or a space or nothing.
- Furthermore, we use a global variable that contains 5
- Fig.~\ref{space} shows how vehicles on the non-through lane enter the merge point when there is a space on the through lane. 
- The blue circle represents the vehicle on the non-through lane, the red circle represents vehicles on the through lane, and the white circle represents a space. 
- Green area means the merge point.
+Furthermore, we use a global variable that contains 5
+Fig.~\ref{space} shows how vehicles on the non-through lane enter the merge point when there is a space on the through lane. 
+The blue circle represents the vehicle on the non-through lane, the red circle represents vehicles on the through lane, and the white circle represents a space. 
+Green area means the merge point.
 We use the number on each circle to distinguish different vehicles or spaces.
 
 %Figure \ref{space}.(a) shows that vehicle 1 on the non-through lane is approaching the merge point.
