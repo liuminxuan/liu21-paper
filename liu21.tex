@@ -1,0 +1,1557 @@
+
+%% bare_conf.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% See:
+%% http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE conference paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex
+%%*************************************************************************
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+\documentclass[10pt, conference, compsocconf]{IEEEtran}
+% Add the compsocconf option for Computer Society conferences.
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[conference]{../sty/IEEEtran}
+
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+%\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at: 
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
+% epslatex.pdf at: http://www.ctan.org/tex-archive/info/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage[cmex10]{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+%\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\usepackage[tight,footnotesize]{subfigure}
+% subfigure.sty was written by Steven Douglas Cochran. This package makes it
+% easy to put subfigures in your figures. e.g., "Figure 1a and 1b". For IEEE
+% work, it is a good idea to load it with the tight package option to reduce
+% the amount of white space around the subfigures. subfigure.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
+% subfigure.sty has been superceeded by subfig.sty.
+
+
+
+%\usepackage[caption=false]{caption}
+%\usepackage[font=footnotesize]{subfig}
+% subfig.sty, also written by Steven Douglas Cochran, is the modern
+% replacement for subfigure.sty. However, subfig.sty requires and
+% automatically loads Axel Sommerfeldt's caption.sty which will override
+% IEEEtran.cls handling of captions and this will result in nonIEEE style
+% figure/table captions. To prevent this problem, be sure and preload
+% caption.sty with its "caption=false" package option. This is will preserve
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later 
+% (recommended due to many improvements over 1.2) of subfig.sty supports
+% the caption=false option directly:
+%\usepackage[caption=false,font=footnotesize]{subfig}
+%
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+% The latest version and documentation of caption.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/caption/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Documentation is contained in the stfloats.sty comments as well as in the
+% presfull.pdf file. Do not use the stfloats baselinefloat ability as IEEE
+% does not allow \baselineskip to stretch. Authors submitting work to the
+% IEEE should note that IEEE rarely uses double column equations and
+% that authors should try to avoid such use. Do not be tempted to use the
+% cuted.sty or midfloat.sty packages (also by Sigitas Tolusis) as IEEE does
+% not format its papers in such ways.
+
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
+% Read the url.sty source comments for usage information. Basically,
+% \url{my_url_here}.
+
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+% provided by users
+\usepackage{psfrag}
+\usepackage{amssymb}
+\usepackage{theorem}
+\def\comment#1{}
+\usepackage{fancyvrb}
+\usepackage{alltt}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[linesnumbered]{algorithm2e}
+\usepackage{program}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{microtype}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+
+%\def\IEEEbibitemsep{2pt plus .5pt}
+\IEEEoverridecommandlockouts
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Formal Specification and Model Checking \\the Revised Autonomous Vehicle
+Merging Point Protocol
+\thanks{This work was partially supported by }
+\thanks{DOI reference number: 10.18293/DMSVIVA2021-004 }
+}
+
+% author names and affiliations
+% use a multiple column layout for up to two different
+% affiliations
+
+\author{\IEEEauthorblockN{Liu Minxuan, Kazuhiro Ogata}
+\IEEEauthorblockA{School of Information Science\\
+Japan Advanced Institute of Science and Technology (JAIST)\\
+1-1 Asahidai, Nomi, Ishikawa 923-1292, Japan\\
+Email: \{ogata\ liuminxuan\}@jaist.ac.jp}
+}
+
+%\author{\IEEEauthorblockN{Authors Name/s per 1st Affiliation (Author)}
+%\IEEEauthorblockA{line 1 (of Affiliation): dept. name of organization\\
+%line 2: name of organization, acronyms acceptable\\
+%line 3: City, Country\\
+%line 4: Email: name@xyz.com}
+%\and
+%\IEEEauthorblockN{Authors Name/s per 2nd Affiliation (Author)}
+%\IEEEauthorblockA{line 1 (of Affiliation): dept. name of organization\\
+%line 2: name of organization, acronyms acceptable\\
+%line 3: City, Country\\
+%line 4: Email: name@xyz.com}
+%}
+
+% conference papers do not typically use \thanks and this command
+% is locked out in conference mode. If really needed, such as for
+% the acknowledgment of grants, issue a \IEEEoverridecommandlockouts
+% after \documentclass
+
+% for over three affiliations, or if they all won't fit within the width
+% of the page, use this alternative format:
+% 
+%\author{\IEEEauthorblockN{Michael Shell\IEEEauthorrefmark{1},
+%Homer Simpson\IEEEauthorrefmark{2},
+%James Kirk\IEEEauthorrefmark{3}, 
+%Montgomery Scott\IEEEauthorrefmark{3} and
+%Eldon Tyrell\IEEEauthorrefmark{4}}
+%\IEEEauthorblockA{\IEEEauthorrefmark{1}School of Electrical and Computer Engineering\\
+%Georgia Institute of Technology,
+%Atlanta, Georgia 30332--0250\\ Email: see http://www.michaelshell.org/contact.html}
+%\IEEEauthorblockA{\IEEEauthorrefmark{2}Twentieth Century Fox, Springfield, USA\\
+%Email: homer@thesimpsons.com}
+%\IEEEauthorblockA{\IEEEauthorrefmark{3}Starfleet Academy, San Francisco, California 96678-2391\\
+%Telephone: (800) 555--1212, Fax: (888) 555--1212}
+%\IEEEauthorblockA{\IEEEauthorrefmark{4}Tyrell Inc., 123 Replicant Street, Los Angeles, California 90210--4321}}
+
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+\begin{abstract}
+We have revised the Autonomous  Vehicle  Protocol  for Merge Points and reported some case studies in our revised protocol and formal specified it in Maude. We also model checked our formal specification with Maude model checking facilities. 
+
+%We have revised SMGA so as to handle composite data. 
+%SMGA is a tool that mainly supports humans in visually perceiving the characteristics/properties of systems/protocols. Those characteristics could be used as lemmas to formally verify that the systems/protocols enjoy desired properties. The core task of the tool is to design a state picture that helps humans better understanding the systems/protocols and/or conjecturing the characteristics. 
+%To demonstrate that SMGA can be applied to the wider class of systems/applications, we have graphically animated the Lim-Jeong-Park-Lee autonomous vehicle intersection control protocol with SMGA.
+%The state machine formalizing the protocol uses composite data. 
+%We have revised SMGA so as to handle composite data. 
+%We design a flexible state picture for the protocol so that it is possible to deal with different initial states when the number of vehicles is less than or equal to a given number.
+%Some characteristics are guessed by observing graphical animations based on the state picture design, and the characteristics are confirmed with model checking.
+%The paper also summarizes several lessons learned as tips on how to design a state picture with composite data.
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+merging protocol; a-merging protocol; Maude; model checking
+
+% anti-fairness; fairness; linear temporal logic; liveness property;
+% model checking;
+\end{IEEEkeywords}
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+\setlength{\parindent}{1em}
+\section{Introduction}
+ \label{sect_intro}
+Self-driving vehicle technologies have been more and more concentrated all around the world.
+These years, with the development of self-driving systems, there have been inventing many kinds of technologies that make it possible for vehicles to do many things, such as some various kinds of protocols in order to make self-driving system safer and more efficient. 
+
+A \textit{merging protocol} \cite{10.1145/3055004.3055028} is one of them. The merging protocol applies for two lanes' vehicles merging into one lane. It bases on vehicle-to-vehicle communications(V2V) system. Authors reported that this protocol is safe and efficient, but V2V system cannot guarantee the network is stable.
+
+Therefore, the protocol needs to be revising.
+We use semaphore instead of using sending or receiving messages to control self-driving vehicles. 
+This revised version allows vehicles to query the controller of the merge point at any time.
+We have conducted some case studies in which our revised protocol in Maude, a rewriting logic-based specification/programming language, and model checked with the Maude model checking facilities (a reach- ability analyzer and an LTL model checker).
+
+The rest of the paper is organized as  follows. Sect.\,\ref{sect_Prel}
+mentions some preliminaries such as state machines, and Maude.
+Sect.\,\ref{sect_oriproto} introduces the \textit{Autonomous Vehicle Protocol for Merge Points} protocol.
+Sect.\,\ref{sect_reviproto} describes the reasons why we propose the revised protocol and its introduction.
+In Sect.\,\ref{sect_formal}, we specify our proposed protocol in Maude and model check some properties in Sect.\,\ref{sect_model}.
+Sect.\,\ref{sect_Relate} mentions some related work.
+Finally, we conclude the present paper in Sect.\,\ref{concl_sect}.
+
+
+
+
+\section{Preliminaries}
+ \label{sect_Prel}
+ 
+ 
+A state machine $M$ $\triangleq \langle S, I, T \rangle$ consists of a
+set $S$ of states, a set $I \subseteq S$ of initial states, and a
+binary relation $T \subseteq S \times S$ over states.  $(s, s') \in T$
+is called a state transition and may be written as $s \rightarrow_M
+s'$.  The set $R \subseteq S$ of reachable states with respect to $M$
+is inductively defined as follows: (1) for each $s \in I$, $s \in R$
+and (2) for each $(s,s') \in T$, if $s \in R$, then $s' \in R$. A
+state predicate $p$ is an invariant property with respect to ${M}$ if
+and only if $p(s)$ holds for all $s \in R$.  A finite sequence $s_0,
+\ldots , s_i, s_{i+1},\ldots , s_n$ of states is called a finite
+computation of $M$ if $s_0 \in I$ and $(s_i, s_{i+1}) \in T$ for each
+$i = 0, \ldots , n - 1$.
+
+In this paper, to express a state of $S$, we use a braced
+associative-commutative collection of name-value
+pairs. Associative-commutative collections are called soups, and
+name-value pairs are called observable components. That is, a state is
+expressed as a braced soup of observable components.  The
+juxtaposition operator is used as the constructor of soups. Let $oc1,
+oc2, oc3$ be observable components, and then $oc1\ oc2\ oc3$ is the
+soup of those three observable components. A state is expressed as
+$\{oc1\ oc2\ oc3\}$. There are multiple possible ways to specify state
+transitions.  In this paper, we use Maude~\cite{Clavel2007LNCS}, a
+programming/specification language based on rewriting logic, to
+specify them as rewrite rules.  Maude makes it possible to specify
+complex systems flexibly and is also equipped with model checking
+facilities (a reachability analyzer and an LTL model checker).
+%A conditional rewrite rule (or just
+%a rule) is in the form \verb!crl! [$lb$] : $l => r if \ldots /\backslash c_i /\backslash \ldots$ , 
+%where $lb$ is the label given to the rule and $c_i$ is part
+%of the condition, which may be an equation $lc_i = rc_i$. 
+%The negation of lci = rci could be written as $(lc_i$ =/= $rc_i) =$ \verb!true!, where \verb!= true! could be omitted. 
+A rewrite rule starts with the keyword \verb!rl!, followed by a label
+enclosed with square brackets and a colon, two patterns (terms that
+may contain variables) connected with =\textgreater, and ends with a
+full stop. A conditional one starts with the keyword \verb!crl! and
+has a condition following the keyword \verb!if! before a full stop.
+The following is a form of a conditional rewrite rule:
+
+\smallskip
+\noindent
+\verb!crl! [$lb$] : $l$ =\textgreater $\ r$ \verb!if! $\ldots$ \verb!/\ !$c_i$ \verb!/\ !$\ldots$
+\smallskip
+
+\noindent
+where $lb$ is a label and $c_i$ is part of the condition, which may be
+an equation $lc_i = rc_i$ or a matching equation $lc_i := rc_i$.  The
+negation of $lc_i = rc_i$ could be written as $(lc_i =$\verb!/!$=
+rc_i) =$ \verb!true!, where \verb!= true! could be omitted.  
+
+
+Maude provides the search command that allows finding a state reachable from
+$t$ such that the state matches $p$ and satisfies condition(s) $c$:
+
+\medskip
+%\begin{small}
+	\noindent
+	\verb!search [n,m] in MOD! $:\ t$ =\textgreater* $p$ \verb!such that! $c$ .
+%\end{small}
+\medskip
+
+\noindent
+where \verb!MOD! is the name of the module specifying the state
+machine, and \verb!n! and \verb!m! are optional arguments stating a
+bound on the number of desired solutions and the maximum depth of the
+search, respectively.  \verb!n! typically is 1 and $t$ typically
+represents an initial state of the state machine.
+
+ 
+
+ 
+\section{Autonomous Vehicle Protocol for Merge Points}
+ \label{sect_oriproto}
+A merge point is visualized in Fig.~\ref{mergePoint_fig}, which is the intersection of two lanes: through lane and non-through lane.
+We suppose that each lane is one way direction.
+As in the Figure, vehicles running on the through lane cannot go from left to right, while vehicles arriving from the non-through lane can only turn to run on (2).
+%If through lane and non-through lane meet at the road intersection, we regard the intersection as merge point. 
+Encountering the merge point, a vehicle running on the through lane has higher priority than a vehicle arriving from the non-through lane because the traffic volume of the through lane is usually greater than that of the non-through lane. 
+In other words, a vehicle running on the non-through lane should let another vehicle running on the through lane crosses the merge point first in order to guarantee that traffic can run efficiently and there is no collision.
+The merge point must be controlled so that vehicles never collided with each other. 
+In other words, it must be ensured that there is at most one vehicle crossing the merge point.
+
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.33}{\includegraphics{Pictures/merge_point.pdf}}
+\end{center}
+\caption{Merge point}
+\label{mergePoint_fig}
+\end{figure}
+
+S. Aoki and R. Rajkumar~\cite{10.1145/3055004.3055028} have proposed the protocol called merging protocol to prevent the collision in the merge point.
+The protocol has two kinds of versions for two traffic environments: only self-driving vehicles on the traffic (1), self-driving vehicles and human-driven vehicles on the traffic (2).
+In the paper, we mainly concentrate on the first version (1). 
+The protocol requires each self-driving vehicle containing systems, devices such as navigation system, sensors to get the necessary information for self-driving vehicle systems such as lane information.
+Further more, the authors assumes each vehicle uses technologies such as WAVE \cite{4346439,5888501}, GPS to communicate and get information from other vehicles.
+Please refer to the paper~\cite{10.1145/3055004.3055028} for details.
+%This protocol is designed for fully self-driving vehicle system which all the self-driving vehicle has a map database, A navigation system, an autonomous vehicle controller, a wireless communication interface, and a localization capability. 
+%Map database and navigation can recognize which lane the vehicle in. Autonomous vehicle controller is used to actuate the self-driving vehicle traverse the chosen path. 
+%The wireless interface is used to allow vehicles to send or receive messages. 
+%It also use some perception system like LIDAR or camera~\cite{6629559} to avoid some unexpected crashing situations. 
+
+%For fully self-driving vehicles crossing the merge point safely and efficiently, three priority states be designed: (i) Fully-priority state; (ii) Semi-priority state; and (iii) Fair state. 
+The protocol contains three states that are: fully-prioritized state, semi-prioritized state, and fair state.
+
+\subsection{Fully-prioritized state}
+Initially, non-through lane vehicles cannot intervene vehicles running on the through lane. 
+In other words, the non-through lane vehicles are allowed to enter the merge point only if no vehicle on the through lane is approaching the merge point.
+There are two cases that happen in fully-prioritized: 
+\begin{itemize}
+    \item The vehicles on the through lane are far away from the merge point or there is no vehicle on the through lane, at this time, non-though lane vehicles which approach the merge point are allowed to enter the merge point.
+    \item Two lanes have vehicles approaching the merge point, the vehicles on the non-through lane stop before the merge point and wait until all through lane vehicles which approach the merge point crossed the merge point. 
+\end{itemize}
+
+
+% \begin{figure}[h]
+% \begin{center}
+% \scalebox{0.33}{\includegraphics{Pictures/fullyPrioritized.pdf}}
+% \end{center}
+% \caption{Fully-prioritized state}
+% \label{fullyPri_fig}
+% \end{figure}
+
+
+\subsection{Semi-prioritized state}
+\label{semi-case}
+This state gives non-through lane vehicle to intervene the vehicle running on the through lane, if it finds there has enough space between two vehicles on the through lane. 
+In semi-prioritized state, vehicles on non-through lane can has a chance to enter the merge point even though some through lane vehicles are approaching the merge point. 
+If there exist space between two through lane vehicles which approaching the merge point, the non-through lane vehicle will use the space to enter the merge point. 
+%Semi-prioritized state gives vehicle a chance to enter the merge point although some through lane vehicles is approaching the merge point. If non-through lane vehicle detects it has enough space between two through lane vehicles which approaching the merge point, it will use the space to enter the merge point. 
+
+% \begin{figure}[h]
+% \begin{center}
+% \scalebox{0.33}{\includegraphics{Pictures/semiPrioritizedNonthrough.pdf}}
+% \end{center}
+% \caption{Fully-prioritized state}
+% \label{semiPriNT}
+% \end{figure}
+
+\subsection{Fair state}
+Fair state can be applied for the traffic in case the through lane is congested. 
+It allows through lane vehicle and non-though lane vehicle to enter the merge point alternately.
+In case the through lane is congested, the protocol moves to fair state.
+The state allows the vehicles on both lane enter the merge point alternately.
+%If non-though lane vehicle find through lane is congested, the whole self-driving control system will move to Fair state.
+%This state allows non-through lane vehicle and through lane vehicle enter the merge point alternately like a zipped merge.
+
+% \begin{figure}[t]
+% \begin{center}
+% \scalebox{0.33}{\includegraphics{Pictures/fairState.pdf}}
+% \end{center}
+% \caption{Fair state}
+% \label{semiPriNT}
+% \end{figure}
+
+
+
+
+% Algorithm 1, Algorithm 2 and Algorithm 3 present the algorithm of \textit{Autonomous Vehicle Protocol for Merge Points}. Algorithm 1 presents the protocol for the vehicle on the non-through lane, and Algorithm 2 presents the protocol for the vehicle on the through lane. In addition, Algorithm 3 presents the protocol for the vehicle on the non-through lane when the vehicle is in Fair state. The vehicles on the non-through lane, originally having the lower priority which are represented by $\omega_{l1}$, .. $\omega_{ln}$. The vehicles on the through lane originally having higher priority are denoted as $\omega_{h1}$, ... $\omega_{hn}$. The sequential subscript numbers indicate the vehicle order, meaning $\omega_{l1}$ is the leader vehicle on the non-through lane before the merge intersection.
+
+
+
+% The CROSS message is not used in any algorithms because this perception is sufficiently safe for the intersection. However, it is used in order to enhance the reliability and safety of the protocol.
+
+
+% \begin{algorithm}[t]
+% \caption{Protocol for Vehicle $\omega_{l1}$ on non-through lane} 
+% \label{alg:nlane}
+% \While{\textit{not started the maneuver}}
+% {
+% SM( $\omega_{l1}$) = \textbf{REQUEST};\newline
+% \uIf{\textit{not halting before the merge point}}
+% {
+% \uIf{\textit{No vehicle before the merge point}}{Start the maneuver;}
+% \uElseIf{\textup{RM($\omega_{l1}$) = \textbf{APPROVE}}}{Start the maneuver;}
+% \Else{Slow down (for halting right before the merge point);}
+% }
+% \Else{
+% Halting before the merge point($\upsilon_{\omega_{h1}}$ = 0);\newline
+% \uIf{\textit{not halting before the merge point}}{Start the maneuver;}
+% \uElseIf{\textup{RM($\omega_{l1}$) = \textbf{APPROVE}}}{Start the maneuver;}
+% \uElseIf{Average\{$\upsilon_{\omega_{h1}}$,..$\upsilon_{\omega_{hn}}$\}  $<$ $\psi$}
+% {SM($\omega_{h1}$) = \textbf{ENTER};\newline
+% SM($\omega_{l2}$, ..$\omega_{ln}$) = \textbf{STATE TRANSITION};\newline
+% $\omega_{h1}$  transits to \textit{Fair state};\newline
+% Start the maneuver;
+% }
+% \Else{
+% \textit{k} = arg max \textit{D\{$\omega_{hi}$\}};\newline
+% SM($\omega_{hk}$) = \textbf{INTERRUPT};\newline
+% \If{\textup{RM($\omega_{hk}$) = \textbf{YIELD}}}
+% {
+% \While{$s_{1}$ sec}
+% {
+% \If{\textup{RM($\omega_{h(k-1)}$ = \textbf{EXIT}}}{Start the maneuver;}
+% }
+% }
+% }
+% }
+% }
+% \end{algorithm}
+
+
+% Some other notations used in these algorithms.
+% \begin{itemize}
+%     \item $\upsilon_{\omega_{hk}}$: Current speed of the vehicle $\omega_{hk}$
+%     \item $\psi$: Speed threshold
+%     \item $s_{1}$: Time threshold for packet loss (for \textbf{INTERRUPT} or \textbf{YIELD})
+%     \item $s_{2}$: Time threshold for packet loss (for \textbf{EXIT)}
+%     \item $\Delta$: Time threshold for \textbf{ABOUT TO EXIT}
+% \end{itemize}
+
+
+% \begin{algorithm}[t]
+% \caption{Protocol for Vehicle $\omega_{h1}$ on through lane}
+% \label{alg:tlane}
+% \uIf{RM($\omega_{h1}$) = \textbf{\textup{REQUEST}}}
+% {
+% \uIf{CollisionDetect($\omega_{h1}$, $\omega_{l1}$) = true}
+% {SM($\omega_{l1}$) = \textbf{DECLINE};\newline Start the maneuver;}
+% \Else{SM($\omega_{l1}$) = \textbf{APPROVE};\newline Start the maneuver;}
+% }
+% \uElseIf{RM($\omega_{h1}$) = \textbf{\textup{ENTER}}}
+% {
+% \While{$s_2$sec}
+% {
+% \uIf{RM($\omega_{l1}$) = \textbf{\textup{ABOUT TO EXIT}}}{
+% SM($\omega_{l1}$) = \textbf{ENTER};\newline
+% Going to start the maneuver;\newline
+% \uIf{RM($\omega_{l1}$) $\neq$ \textbf{\textup{EXIT}} in $\Delta$sec later after \textbf{\textup{ABOUT TO EXIT}}}{Slow down and Halting;}
+% \Else{Start the maneuver;}
+% }
+% \uElseIf{RM($\omega_{l1}$) = \textbf{\textup{EXIT}}}{Start the maneuver;}
+% \Else{Halting;}
+% }
+% \uIf{No vehicle before the merge point}{Start the maneuver;}
+% \Else{Halting;}
+% }
+% \uElseIf{RM($\omega_{l1}$) = \textbf{\textup{INTERRUPT}}}{\uIf{CollisionDetect($\omega_{h1}$, $\omega_{l1}$) = true}{Slow down(to make space for $\omega_{l1}$);\newline
+% SM($\omega_{l1}$) = \textbf{YIELD};}
+% \Else{SM($\omega_{l1}$) = \textbf{YIELD};}}
+% \Else{Start the maneuver;}
+% \end{algorithm}
+
+% \begin{algorithm}[t]
+% \caption{Protocol for Vehicle $\omega_{l1}$ in Fair state}
+% \label{alg:fair}
+% \uIf{right before the merge point}{
+% \uIf{RM($\omega_{h1}$) = \textbf{\textup{ABOUT TO EXIT}}}{
+% SM($\omega_{h2}$) = \textbf{ENTER};\newline
+% SM($\omega_{l2}$, ..$\omega_{ln}$) = \textbf{STATE TRANSITION};\newline
+% Going to start the maneuver;\newline
+% \uIf{RM($\omega_{h1}$) $\neq$ \textbf{\textup{EXIT}} in $\Delta$sec later after \textbf{\textup{ABOUT TO EXIT}}}{Halting;}
+% \Else{Start the maneuver;}
+% }
+% \uElseIf{RM($\omega_{h1}$) = \textbf{\textup{EXIT}}}{
+% SM($\omega_{h2}$) = \textbf{ENTER};\newline
+% SM($\omega_{l2}$, ..$\omega_{ln}$) = \textbf{STATE TRANSITION};\newline
+% Start the maneuver;
+% }
+% \Else{Halting;}
+% }
+% \Else{Follow the vehicle in front;}
+% \end{algorithm}
+
+% In the \textit{Autonomous Vehicle Protocol for Merge Points}, three functions implies three priority state of non-through lane vehicles. (i)High throughput function; (ii) Intervention function; (iii) Zipper merge function. 
+
+
+
+
+
+
+
+
+
+
+ 
+\section{Abstract Merging Protocol for Self-Driving Vehicles}
+ \label{sect_reviproto}
+ 
+A merging protocol uses V2V communication and allows the self-driving vehicles merge into one lane from two different lanes. 
+Sending and receiving messages basing on network may not fully reliable because some data may lost during the transmission. 
+If one vehicle lose some messages sent by other vehicles, a serious collision may happen. 
+Furthermore, to make it more abstract, some information, such as vehicle speed, position on road, are ignored.
+We use two queues to manage the vehicles on two lanes, status represents the vehicle position.
+Therefore, basing on the \textit{merging protocol}, we designed a abstract version of the protocol called \textit{abstract merging protocol (a-merging protocol)}.
+
+%Therefore, basing on \textit{Autonomous Vehicle Protocol for Merge Points}, we designed a new protocol called \textit{Revised Autonomous Vehicle Protocol for Merge Points} .
+
+%Basing on the \textit{Autonomous Vehicle Protocol for Merge Points}, we find 
+In \textit{a-merging protocol}, there are three situations that allow non-through lane vehicle to enter the merge point: 
+(i) No vehicle on through lane is approaching the merge point; 
+(ii) Some vehicles on the through lane is approaching the merge point but it has enough space between them; 
+(iii) Through lane and non-through lane vehicle enter the merge point alternately. 
+Let us consider the status of vehicle on through lane shown in Fig.~\ref{throughLaneStatus} which has five statues. 
+Arrows mean vehicle move from one status to another status if it satisfies some conditions.
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.28}{\includegraphics{Pictures/throughLane.pdf}}
+\end{center}
+\caption{Statuses of vehicle on the through lane}
+\label{throughLaneStatus}
+\end{figure}
+
+Conditions are represented by numbers as follows:
+\begin{enumerate}[]
+    \item vehicle is approaching the merge point. %1
+    \item no vehicle is crossing the merge point and whole system is in Fully-prioritized state. %2
+    \item vehicle crossed the merge point. %3
+    \item number of through lane vehicle equals or greater than one explicit number and no vehicle is crossing the merge point.  %4
+    \item whole system is in Fair state and through lane vehicle's turn and no vehicle is crossing the merge point. %5
+    \item whole system is in Fair state and non-through lane vehicle's turn. %6
+    \item whole system is not in Fair state. %7
+    \item whole system is in Fair state and through lane vehicle's turn and no vehicle is crossing the merge point. %8
+\end{enumerate}
+
+Initially, vehicles on through lane are in \textit{running} status which mean vehicles are far away from the merge point. 
+The status of vehicle will change to \textit{approaching} if vehicle is approaching to the merge point.
+If the whole system is not in Fair state, vehicle will change to \textit{crossing} status from \textit{approaching} status when no vehicle crossing merge point. 
+After that, the status of vehicle on through lane will go to \textit{crossed} status. 
+From condition 4 to condition 8, the whole system goes to the fair state, vehicle on through lane firstly check whether it is through lane's turn. 
+If it is the through lane's turn, vehicle changes from \textit{approaching} status to \textit{crossing} status. 
+Otherwise, vehicle on the through lane changes to \textit{halting} status from \textit{approaching} status and stop before the merge point waiting until through lane's turn.
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.28}{\includegraphics{Pictures/nonThroughLane.pdf}}
+\end{center}
+\caption{Statuses of vehicle on the non-through lane}
+\label{nonThroughLaneStatus}
+\end{figure}
+
+Fig.~\ref{nonThroughLaneStatus} showing status transition of vehicles on non-through lane.
+Conditions are represented by numbers as follows:
+\begin{enumerate}
+    \item vehicle is approaching the merge point. %1
+    \item through lane vehicle is approaching the merge point and whole system is not in Fair state. %2
+    \item no vehicle on through lane is approaching the merge point and whole system is not in Fair state and no vehicle is crossing the merge point. %3
+    \item vehicle crossed the merge point. %4
+    \item no vehicle on through lane is approaching the merge point and whole system is not in Fair state and no vehicle is crossing the merge point. %5
+    \item whole system is in Semi-prioritized state and no vehicle is crossing the merge point. %6
+    \item whole system is in Fair state and non-through lane vehicle's turn and no vehicle is crossing the merge point. %7
+    \item whole system is in Fair state and through lane vehicle's turn. %8
+    \item whole system is not in Fair state. %9
+    \item whole system is in Fair state and through lane vehicle's turn. %10
+    \item whole system is in Fair state and non-through lane vehicle's turn and no vehicle is crossing the merge point. %11
+    \item whole system is in Fair state and non-through lane vehicle's turn and no vehicle is crossing the merge point. %12
+\end{enumerate}
+
+Initially, vehicles on non-through lane start from \textit{running} status.
+It transfers to \textit{approaching} status when it approaches the merge point.
+Let us firstly consider the whole system is not in Fair sate.
+In Fully-prioritized state, vehicle on non-through lane initially has lower priority than vehicle on through lane.
+Therefore, vehicle on non-through lane changes to \textit{stopped} status when there are some vehicles on through lane approaching to the merge point.
+If no vehicle on through lane has \textit{approaching} status, the vehicle on non-through lane moves to \textit{crossing} status from \textit{stopped} status.
+There exists space between the merge point and the vehicle whose status is \textit{approaching} on through lane, it refers to semi-prioritized state. 
+Then the vehicle on non-through lane changes its status to \textit{crossing} from \textit{stopped}
+%If vehicle on non-through lane finds no vehicle on through lane is approaching to the merge point, it will go to \textit{crossing} status from \textit{stopped} status. 
+%If vehicle on non thorough lane find space before the merge point it knows Semi-prioritized state comes and it changes to \textit{crossing} status from \textit{stopped} status. After vehicle crossed the merge point, it moves to \textit{crossed} status.
+
+While vehicle on through lane changes to the Fair state, vehicle on non-through lane also moves to Fair state. 
+In this state, if it is through lane vehicle's turn, non-though lane vehicle moves to \textit{halting} status from \textit{approaching} status or \textit{stopped} status. 
+On the other side, if it is non-through lane vehicle's turn, vehicle on non-through lane changes to \textit{crossing} status from \textit{approaching}, \textit{stopped} or \textit{halting} status. 
+ 
+
+
+ 
+\section{Formal Specification}
+ \label{sect_formal}
+ In the semi-prioritized state of the merging protocol, if there exists an enough space on through lane, a non-through lane vehicle can enter to the merge point.
+ Therefore, in the specification, we use two queues for both lanes in which the element of the queue is a car or a space (space refers to enough space in our specification).
+ %From the \textit{Revised Autonomous Vehicle Protocol for Merge Points }, we know that in the Semi-priority state, a space can accommodate a car, so we can divide the road into many small squares, and each small square can accommodate a car or a space or nothing.
+ Furthermore, we use a global variable that contains 5
+ Fig.~\ref{space} shows how vehicles on the non-through lane enter the merge point when there is a space on the through lane. 
+ The blue circle represents the vehicle on the non-through lane, the red circle represents vehicles on the through lane, and the white circle represents a space. 
+ Green area means the merge point.
+We use the number on each circle to distinguish different vehicles or spaces.
+
+%Figure \ref{space}.(a) shows that vehicle 1 on the non-through lane is approaching the merge point.
+In the Fig.~\ref{space} (a), there are two vehicles numbered 2 and 4 on the through lane, and there is enough space in the middle of the two vehicle to accommodate the third vehicle. We number this space as 3.
+Vehicles or spaces on the through lane are all approaching the meeting point.
+According to the full-prioritized state, the vehicles on the non-through lane need to let the vehicles on the through lane pass the merge point first. 
+Therefore, as shown in Fig.~\ref{space} (b), vehicle 1 stops before the merge point and the vehicle 2 passes through the merge point first.
+Fig.~\ref{space} (c) and Fig.~\ref{space} (d) show the vehicle on the non-through lane enters to merge point because there exists the space on the through lane.
+%Fig.~\ref{space} (c) and Fig.~\ref{space} (d) show the process of the vehicles on the non-through lane find that it has enough space to join the vehicles on the through lane and enter the merge point.
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.28}{\includegraphics{Pictures/space.pdf}}
+\end{center}
+\caption{An example of semi-prioritized state}
+\label{space}
+\end{figure}
+ 
+%  (\verb!v![$vid$] : $lid$\verb!,!$vstat$\verb!,!$t$\verb!,!$lt$)
+ 
+In the specification, we use four observable components:
+\begin{itemize}
+    \item (\verb!v[!$id$\verb!]:!$position$\verb!,!$vstat$) - $id$ is an ID (a nature number) of vehicle or space, $position$ is the lane (through lane or non-through lane) which the vehicle or space $id$ is located, $vstate$ is the space or the status of the vehicle $id$. Initially, $vstate$ is \verb!space! if it is the space, \verb!running! if it is the vehicle.
+    \item (\verb!lane[!$position$\verb!]:!$q$) - $position$ is the through lane or non-through lane and $q$ is a queue of vehicle (natural numbers) or space. Initially, $q$ is \verb!empq!
+    \item (\verb!switch:!$c$\verb!,!$semi$\verb!,!$fair$\verb!,!$nonthrough$\verb!,!$nthrough$) - $c$ contains two options \verb!vehicleCrossing! and \verb!noVehicleCrossing! which represent a vehicle is crossing the merge point or not. 
+    $semi$ is either \verb!semiPrioritized! or \verb!noSemiPrioritized! to control self-driving system in Semi-prioritized state. 
+    $fair$ contains \verb!noFair! which means the self-driving system is not in Fair state, \verb!fairT! and \verb!fairN! controls which lane's turn when it in Fair state. 
+    $nonthrough$ is either \verb!noVeInNTLane! or \verb!veInNTLane! represents the non-through lane has vehicle approaching the merge point or not. 
+    $nthrough$ is a nature number which shows the number of vehicle on through lane approaching the merge point.
+    Initially, $c$, $semi$,$fair$,$nonthrough$ and $nthrough$ are \verb!noVehicleCrossing!, \verb!noSemiPrioritized!, \verb!noFair!, \verb!noVeInNTLane! and \verb!0!, respectively 
+    \item (\verb!gstat! : $gstat$) -  where $gstat$ is either \verb!fin! or \verb!nFin!.
+	When it is \verb!fin!, all vehicles concerned have crossed the intersection.
+\end{itemize}
+
+Let us consider a case such that the vehicle approaches the merge point, the status of the vehicle changes from the \verb!running! status to the \verb!approaching! status. 
+This case corresponds to condition 1 of two lanes.
+We use four rules to specify this case in which
+%We use four rules to specify this process. 
+two rules for the through lane and two rules for the non-through lane.
+
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [approach_T1] : 
+{(gstat: nFin) 
+(switch: B1,B2,B3,B4,numOfVeInTLane) 
+(lane[L]: empq) (v[VI]: L,running) OCs} 
+=> {(gstat: nFin) 
+(switch: B1,B2,B3,B4,(numOfVeInTLane + 1)) 
+(lane[L]: VI) (v[VI]: L,approaching) OCs} 
+if L == Through .
+
+crl [approach_T2] : 
+{(gstat: nFin) 
+(switch: B1,B2,B3,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI']: L,running) OCs} 
+=> {(gstat: nFin) 
+(switch: B1,B2,B3,B4,(numOfVeInTLane + 1)) 
+(lane[L]: (VI ; VS ; VI')) 
+(v[VI']: L,approaching) OCs} 
+if L == Through .
+
+crl [approach_N1] : 
+{(gstat: nFin) 
+(switch: B1,B2,B3,B4,B5) 
+(lane[L]: empq) (v[VI]: L,running) OCs} 
+=> {(gstat: nFin) 
+(switch: B1,B2,B3,veInNTLane,B5) 
+(lane[L]: VI) (v[VI]: L,approaching) OCs} 
+if L == Nothrough .
+
+crl [approach_N2] : 
+{(gstat: nFin) 
+(switch: B1,B2,B3,B4,B5) 
+(lane[L]: (VI ; VS)) (v[VI']: L,running) OCs} 
+=> {(gstat: nFin) (switch: B1,B2,B3,
+veInNTLane,B5) 
+(lane[L]: (VI ; VS ; VI')) 
+(v[VI']: L,approaching) OCs} 
+if L == Nothrough .
+\end{verbatim}
+\end{footnotesize}
+
+
+
+\noindent \verb!B1!, \verb!B2!, \verb!B3!, \verb!B4!, \verb!B5! are Maude variable for arbitrary variables  of \verb!Swich!. 
+\verb!VI! and \verb!VI'! are Maude variable of natural numbers. 
+\verb!VS! is a Maude variable of queues of natural numbers or empty.
+\_;\_ is the construction of the queue which is associative. 
+It means that \textit{(q1 ; q2) ; q3 = q1 ; (q2 ; q3)}. 
+\verb!empq! represents the queue is empty. 
+\verb!(numOfVeInTLane)! in the \verb!switch! means the length of queue on through lane (only count vehicle).
+%From \verb![approach_T1]! and \verb![approach_T2]! rules, \verb!(numOfVeInTLane + 1)! in the \verb!switch! means the size of queue which represent vehicle on through lane add 1. 
+\verb!VeInNTLane! in the \verb!switch! means the queue of the non-through lane is not empty. 
+Notice, vehicles whose status are \verb!running! cannot be counted in the queue (both lanes).
+
+We use the following states to express conditions of both lanes mentioned in~\ref{sect_reviproto} as follows:
+
+
+\begin{figure*}[tb]
+\begin{center}
+\scalebox{0.35}{\includegraphics{Pictures/fullySim.pdf}}
+\end{center}
+\caption{An example of fully-prioritized state}
+\label{fully_fig}
+\end{figure*}
+
+\subsection{Fully-prioritized state}
+
+Let us consider the fully-prioritized state in which there are two vehicles on through lane and one vehicle on non-through lane shown in Fig.~\ref{fully_fig}. 
+The initial state shown in Fig.~\ref{fully_fig} (a) is expressed as follows:
+%Initially, the through lane and non-through lane both have one vehicle running on them. Here, the initial state is expressed as follows:
+ 
+\begin{footnotesize}
+\begin{verbatim}
+{(gstat: nFin) 
+(lane[Through]: empq) (lane[Nothrough]: empq) 
+(v[1]: Through,running) (v[2]: Through,running)
+(v[3]: Nothrough,running)
+(switch: noVehicleCrossing,noSemiPrioritized,
+noFair,noVeInNTLane,0)} .
+\end{verbatim}
+\end{footnotesize}
+
+%\noindent \verb!v[1]! and \verb!v[2]! observable components represent two vehicles. 
+%One of them is running on the through lane, the other one is running on the non-through lane. The observable component of \verb!switch! means no vehicle is crossing the merge point and the whole self-driving system is either in Semi-prioritized state or Fair state. \verb!noVeInNTLane! and \verb!0! show the queue of two lanes are empty.
+
+We use the rules \verb!full_T_crossing! to express the condition 2 of through lane, \verb!full_N_stop!, \verb!full_N_crossing1! and \verb!full_N_crossing2! for condition 2, 3 and 5, respectively. 
+Fig.~\ref{fully_fig} (b) and (c) is an example for the rule \verb!full_T_crossing!, while Fig.~\ref{fully_fig} (d) and (e) refers the rule \verb!full_N_crossing2!.
+Those rules are specified in Maude as follows:
+%Condition 2 of the through lane is shown by rule \verb![full_T_crossing]!:
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [full_T_crossing] : {(gstat: nFin) 
+(switch: noVehicleCrossing,noSemiPrioritized,
+noFair,B4,B5) 
+(lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
+=> {(gstat: nFin) (switch: vehicleCrossing,
+noSemiPrioritized,noFair,B4,B5) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
+if L == Through .
+\end{verbatim}
+\end{footnotesize}
+
+%\noindent Condition 2 of the non-through lane is specified by Maude as follow:
+\begin{footnotesize}
+\begin{verbatim}
+crl [full_N_stop] : 
+{(gstat: nFin) 
+(switch: B1,B2,noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
+=> {(gstat: nFin) 
+(switch: B1,B2,noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,stopped) OCs} 
+if L == Nothrough /\ numOfVeInTLane > 0 .
+\end{verbatim}
+\end{footnotesize}
+
+%\noindent Condition 3 and 5 explain how vehicle moves from approaching status to crossing status in Fully-prioritized state.
+%They are specified as follows by Maude:
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [full_N_crossing1] : 
+{(gstat: nFin) 
+(switch: noVehicleCrossing,noSemiPrioritized,
+noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
+=> {(gstat: nFin) 
+(switch: vehicleCrossing,noSemiPrioritized,
+noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs}
+ if L == Nothrough /\ numOfVeInTLane == 0 .
+ 
+crl [full_N_crossing2] : {(gstat: nFin) 
+(switch: noVehicleCrossing,noSemiPrioritized,
+noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,stopped) OCs} 
+=> {(gstat: nFin) 
+(switch: vehicleCrossing,noSemiPrioritized,
+noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs}
+if L == Nothrough /\ numOfVeInTLane == 0 .
+\end{verbatim}
+\end{footnotesize}
+
+\noindent Let us consider the rule \verb!full_N_stop! for condition 2 of non-through lane, vehicle on non-through lane must stop if there exists at least one vehicle on through lane and the system is not in fair state.
+We change the status of vehicle \verb!VI! on top queue to \verb!stopped! from \verb!approaching! when \verb!numofVeInTLane! is greater than \verb!0! and the second value of \verb!switch! is \verb!noFair!.
+The other rules work similarly.
+
+
+
+
+\subsection{Semi-prioritized state}
+
+%We proposed that observable component of (\verb!v[!$id$\verb!]: !$position$\verb!,!$vstat$) is a vehicle or space. 
+As mentioned in~\ref{semi-case}, in the semi-prioritized state, a space appears in through lane.
+If it is a space on the non-through lane, we delete it because non-through lane initially has lower priority than the through lane.
+We use the following rule to specify this situation in Maude.
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [semi_N_space2] : 
+{(gstat: nFin) 
+(switch: B1,B2,B3,B4,B5) 
+(lane[L]: (VI ; VS)) (v[VI']: L,space) OCs} 
+=> {(gstat: nFin) 
+(switch: B1,B2,B3,B4,B5) 
+(lane[L]: (VI ; VS)) OCs} 
+if L == Nothrough .
+\end{verbatim}
+\end{footnotesize}
+
+\noindent On the other side, If it is the space on the through lane, we push the space into the queue of the through lane.
+\verb!space! status changes to \verb!yield! status for following the Maude expression.
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [semi_T_space2] : 
+{(gstat: nFin) 
+(switch: B1,B2,noFair,B4,B5) 
+(lane[L]: (VI ; VS)) (v[VI']: L,space) OCs} 
+ => {(gstat: nFin) 
+ (switch: B1,B2,noFair,B4,B5) 
+ (lane[L]: (VI ; VS ; VI')) (v[VI']: L,yield) OCs} 
+if L == Through .
+\end{verbatim}
+\end{footnotesize}
+
+When the status of the top of the through lane's queue is \verb!yield!, we change the \verb!noSemiPrioritized! in the \verb!switch! to \verb!semiPrioritized!, it refer that the system moves to the semi-prioritized state.
+%\noindent When the number which represents yield status is the first element of the through lane's queue, we move the \verb!noSemiPrioritized! in the \verb!switch! to \verb!semiPrioritized!, so that the entire system moves to the Semi-Prioritized state.
+This condition is specified by following rule.
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [semi_T_yield1] : 
+{(gstat: nFin) 
+(switch: noVehicleCrossing,B2,noFair,
+veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; VI' ; VS)) (v[VI]: L,yield) OCs} 
+=> {(gstat: nFin) 
+(switch: noVehicleCrossing,semiPrioritized,
+noFair,veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI' ; VS)) OCs} 
+if L == Through .
+\end{verbatim}
+\end{footnotesize}
+
+\noindent Condition 6 of non-through lane in \textit{a-merging protocol} allows vehicle on non-through lane from \verb!stopped! status moves to \verb!crossing! status because of the semi-prioritized state. 
+It is specified by rule in Maude as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [semi_N_crossing] : 
+{(gstat: nFin) 
+(switch: noVehicleCrossing,semiPrioritized,
+ noFair,veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,stopped) OCs} 
+=> {(gstat: nFin) 
+(switch: vehicleCrossing,semiPrioritized,
+ noFair,veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs}
+if L == Nothrough .
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Vehicles' leaving in fully-prioritized and semi-prioritized states}
+
+Then, let us consider vehicles' leaving of two lanes in fully-prioritized state and semi-prioritized state. 
+%Firstly, no matter which vehicle crossed, the whole system should return to fully-prioritized state. 
+Firstly, the whole system returns to fully-prioritized if a vehicle has just crossed to the merge point.
+Secondly, we remove one vehicle out of the queue when it crossed and update the number of vehicle on the through lane.
+In non-through lane, \verb!veInNTLane! is changed to \verb!noVeInNTLane! if the last vehicle on non-through lane crossed the merge point.
+The followings rules refer to some cases of vehicle leaving on through lane and non-through lane.
+%Secondly, we remove one vehicle out of the queue when it crossed, therefore, number of vehicle on the through lane should minus 1 and \verb!switch! should tell us whether ti is the last element in the queue of the non-through lane.
+%Basing on these considerations, we specify vehicle leaving on through lane and non-through lane as follows:
+
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [T_leave1] : {(gstat: nFin) 
+(switch: vehicleCrossing,noSemiPrioritized,
+noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VI' ; VS)) (v[VI]: L,crossing) OCs} 
+=> {(gstat: nFin) 
+(switch: noVehicleCrossing,noSemiPrioritized,
+ noFair,B4,sd(numOfVeInTLane,1)) 
+(lane[L]: (VI' ; VS)) (v[VI]: !(L),crossed) OCs} 
+if L == Through .
+ 
+crl [N_leave2] : 
+{(gstat: nFin) 
+(switch: vehicleCrossing,B2,
+ noFair,veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; empq)) (v[VI]: L,crossing) OCs} 
+=> {(gstat: nFin) 
+(switch: noVehicleCrossing,noSemiPrioritized,
+noFair,noVeInNTLane,numOfVeInTLane) 
+(lane[L]: empq) (v[VI]: !(L),crossed) OCs} 
+if L == Nothrough .
+\end{verbatim}
+\end{footnotesize}
+
+%\noindent Rule \verb![T_leave1]! shows vehicle on through lane leaving in fully-prioritized state and semi-prioritized state while rule \verb![N_leave2]! shows non-through lane.
+\noindent Rule \verb![T_leave1]! can be applied for the vehicle on through lane leaving in fully-prioritized state and semi-prioritized state; while rule \verb![N_leave2]! for the vehicle on non-through lane as shown in Fig.~\ref{fully_fig} (e) and (f).
+
+
+\subsection{Fair state}
+
+The fair state in the \textit{merging protocol} appears when the system finds the traffic is congested, and a vehicle on through lane gives way to non-through lane. 
+In the a-merging protocol, we define the congestion by the number of vehicles as a constant (3 is used in the paper) on through lane. 
+It refers that if there exist vehicles on both lanes and at least three vehicles on through lane, the system moves to fair state.
+The situation refers to condition 5 of through lane and specified as following rule.
+
+%The whole system moves to Fair state following the condition 5 of through lane. 
+%In our formal specification, we set the explicit number as 3. 
+%showing as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [fair_T_first_crossing] : 
+{(gstat: nFin) 
+(switch: noVehicleCrossing,B2,
+noFair,veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
+=> {(gstat: nFin) 
+(switch: vehicleCrossing,B2,
+fairT,veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
+if L == Through /\ numOfVeInTLane >= 3 .
+\end{verbatim}
+\end{footnotesize}
+
+\noindent We not only use the third variable of \verb!switch! to show the Fair state, but also use it to control two lane's turn when it in fair state. 
+\verb!fairT! means it is through lane's turn while \verb!fairN! means non-through lane's turn. 
+The formal specification is shown as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+ crl [fair_T_crossing2] : 
+ {(gstat: nFin) (switch: noVehicleCrossing,B2,
+ fairT,veInNTLane,numOfVeInTLane) 
+ (lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
+=> {(gstat: nFin) (switch: vehicleCrossing,B2,
+fairT,veInNTLane,B5) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
+if L == Through .
+
+crl [fair_N_crossing3] : 
+{(gstat: nFin) (switch: noVehicleCrossing,B2,
+fairN,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
+=> {(gstat: nFin) (switch: vehicleCrossing,B2,
+fairN,B4,B5) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
+if L == Nothrough .
+\end{verbatim}
+\end{footnotesize}
+
+\noindent Finally, let us consider the crossed vehicle in fair state. 
+When the vehicle exits the merge point, we not only need to poll it out of the queue, but also hand over the crossing right pass to the other lane, if it is not the last vehicle in queue.
+However, if it is the last vehicle, we move the whole system to the initial state, which is Fully-priority state.
+Therefore, our formal specification is shown as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [fair_T_crossed1] : 
+{(gstat: nFin) (switch: vehicleCrossing,B2,
+fairT,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VI' ; VS))
+(v[VI]: L,crossing) OCs} 
+=> {(gstat: nFin) (switch: noVehicleCrossing,B2,
+fairN,B4,sd(numOfVeInTLane,1)) 
+(lane[L]: (VI' ; VS)) (v[VI]: L,crossed) OCs} 
+if L == Through .
+
+crl [fair_T_crossed2] :
+{(gstat: nFin) (switch: vehicleCrossing,B2,
+fairT,B4,numOfVeInTLane) 
+(lane[L]: (VI ; empq)) (v[VI]: L,crossing) OCs} 
+=> {(gstat: nFin) 
+(switch: noVehicleCrossing,noSemiPrioritized,
+noFair,B4,0) (lane[L]: empq) 
+(v[VI]: L,crossed) OCs} 
+if L == Through .
+
+ crl [fair_N_crossed1] : 
+ {(gstat: nFin) (switch: vehicleCrossing,B2,
+ fairN,B4,numOfVeInTLane) 
+ (lane[L]: (VI ; VI' ; VS)) 
+ (v[VI]: L,crossing) OCs} 
+=> {(gstat: nFin) (switch: noVehicleCrossing,B2,
+fairT,B4,numOfVeInTLane) 
+(lane[L]: (VI' ; VS)) (v[VI]: L,crossed) OCs} 
+if L == Nothrough .
+
+crl [fair_N_crossed2] :
+{(gstat: nFin) (switch: vehicleCrossing,B2,
+fairN,B4,numOfVeInTLane) 
+(lane[L]: (VI ; empq)) (v[VI]: L,crossing) OCs} 
+=> {(gstat: nFin) 
+(switch: noVehicleCrossing,noSemiPrioritized,
+noFair,noVeInNTLane,numOfVeInTLane) 
+(lane[L]: empq) (v[VI]: L,crossed) OCs} 
+if L == Nothrough .
+\end{verbatim}
+\end{footnotesize}
+
+\noindent In Fair state, the traffic on the through lane is congested. 
+Therefore, we use \verb!switch! to protect space from approaching the merge point in our formal specification.
+However, there is a situation that space has already in the queue of the through lane when it in Fair state. 
+We delete the space when it comes to that situation to keep the order correctly. 
+If it is the last element in the queue of the through lane, we move the state back to the Fully-prioritized state.
+
+\begin{footnotesize}
+\begin{verbatim}
+crl [fair_space1] :
+{(gstat: nFin) (switch: B1,B2,
+fairT,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VI' ; VS)) (v[VI]: L,yield) OCs} 
+=> {(gstat: nFin) (switch: B1,B2
+,fairT,B4,numOfVeInTLane) (lane[L]: VI' ; VS) OCs} 
+if L == Through .
+
+crl [fair_space2] : 
+{(gstat: nFin) (switch: B1,B2,
+fairT,B4,numOfVeInTLane) 
+(lane[L]: VI) (v[VI]: L,yield) OCs} 
+=> {(gstat: nFin) (switch: B1,B2,
+noFair,B4,numOfVeInTLane) (lane[L]: empq) OCs} 
+if L == Through .
+\end{verbatim}
+\end{footnotesize}
+
+\noindent Condition 7 in \textit{Revised Autonomous Vehicle Protocol for Merge Points} of through lane and condition 9 in \textit{Revised Autonomous Vehicle Protocol for Merge Points} of non-through lane mean vehicle in halting status should back to approaching status because halting status is the exclusive status of Fair state.
+We specify these two conditions as follow:
+
+\begin{footnotesize}
+\begin{verbatim}
+rl [fair_exit] : 
+{(gstat: nFin) (switch: B1,B2,
+noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
+=> {(gstat: nFin) (switch: B1,B2,
+noFair,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) 
+(v[VI]: L,approaching) OCs} .
+if L == Through .
+\end{verbatim}
+\end{footnotesize}
+
+
+
+
+
+
+
+
+
+
+% In Figure \ref{fully_fig}.(a), if two vehicle is approaching the merge point, vehicle on non-through lane will stop before the merge point and let 
+
+
+% \verb!veInNTLane! shows non-through lane has vehicle which is approaching the merge point and \verb!numOfVeInTLane! explains number of vehicle on through lane is approaching the merge point. 
+
+
+ 
+\section{Model Checking}
+ \label{sect_model}
+Our \textit{Revised Autonomous Vehicle Protocol for Merge Points} has two desired properties the protocol should enjoy.
+\begin{itemize}
+    \item \textit{Mutual exclusion - No vehicles in merge point at the same time}
+    \item \textit{Deadlock freedom - If a vehicle is trying to cross the merge point, a vehicle, may not the same one, finally crossed the intersection}
+\end{itemize}
+
+Firstly, we need a initial state that can cover all three states in our \textit{Revised Autonomous Vehicle Protocol for Merge Points}.
+Therefore, we put two space and three vehicles on the through lane, one space and three vehicles on the non-through lane.
+The \verb!init! is shown as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+{(gstat: nFin) 
+(lane[Through]: empq) (lane[Nothrough]: empq) 
+(v[1]: Through,space) (v[2]: Through,space) 
+(v[3]: Nothrough,space)
+(v[4]: Through,running) (v[5]: Through,running) 
+(v[6]: Through,running)
+(v[7]: Nothrough,running) (v[8]: Nothrough,running)
+(v[9]: Nothrough,running)
+(switch: noVehicleCrossing,noSemiPrioritized
+noFair,noVeInNTLane,0)} .
+\end{verbatim}
+\end{footnotesize}
+
+The \textit{Mutual exclusion} property can be checked by the following search commmand:
+
+\begin{footnotesize}
+\begin{verbatim}
+search [1] in MTAS15 : 
+init =>* {(v[VI]: LN, crossing) 
+(v[VI']: LT, crossing) OCs} such that VI =/= VI' .
+\end{verbatim}
+\end{footnotesize}
+
+The \verb!MTAS15! is the specification of the revised protocol.
+The search commands tries to find a state from the initial state \verb!init! such that two vehicle is crossing the merge point.
+It does not find any such states which means our \textit{Revised Autonomous Vehicle Protocol for Merge Points} enjoys the \textit{Mutual exclusion} property for the initial state we set.
+
+The \textit{Deadlock freedom} can be checked by the following commend:
+
+\begin{footnotesize}
+\begin{verbatim}
+search [1] in MTAS15 : init =>! {OCs} .
+\end{verbatim}
+\end{footnotesize}
+
+This command tries to find a state that cannot let all vehicles crossed the merge point. 
+It does not find any such state.
+Therefore, our \textit{Revised Autonomous Vehicle Protocol for Merge Points} also enjoy the \textit{Deadlock freedom} property for the \verb!init!.
+
+
+ 
+ 
+\section{Related Work}
+ \label{sect_Relate}
+ 
+An autonomous vehicle intersection control protocol called LJPL protocol has been proposed to handle the mutual exclusion property in the intersection~\cite{LimJongBeom2018Aedm}.
+The authors design two type of lanes: concurrent and conflict lanes. 
+The protocol allows that the vehicles on concurrent lanes can enter the intersection simultaneously while the vehicles on conflict lanes cannot enter the intersection simultaneously.
+M.N.Aung, et.al~\cite{DBLP:conf/seke/AungP019} has specified and model checked the LJPL protocol in Maude.
+They have revised the protocol to avoid the deadlock state that cannot decide the order of two vehicle on two conflict lanes have same time arrival.
+In our case, we also use Maude to model check some properties of our proposed protocol however, it is not enough to guarantee the general . 
+We need 
+ 
+
+
+
+
+
+
+
+
+\section{Conclusion}
+\label{concl_sect}
+
+We have proposed a protocol based on the \textit{Autonomous Vehicle Protocol for Merge Points}~\cite{10.1145/3055004.3055028}, formally specified and conducted some experiments by model checking in Maude.
+%We have revised the \textit{Autonomous Vehicle Protocol for Merge Points} \cite{10.1145/3055004.3055028} and some case studies in our revised protocol and formal specified it in Maude.
+%We also model checked our formal specification with Maude model checking facilities.
+We have encountered the state explosion problem when we tried to put more vehicle running on two lanes to model check our revised protocol enjoys some properties in other situations.
+In the future, we need to use theorem proving, such as CafeOBJ~\cite{}, to prove our proposed protocol enjoys some desired properties.
+
+
+
+
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command, the
+% \label for the overall figure must come after \caption.
+% \hfil must be used as a separator to get equal spacing.
+% The subfigure.sty package works much the same way, except \subfigure is
+% used instead of \subfloat.
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+
+% An example of a floating table. Note that, for IEEE style tables, the 
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals/conferences use top floats
+% exclusively. Note that, LaTeX2e, unlike IEEE journals/conferences, places
+% footnotes above bottom floats. This can be corrected via the \fnbelowfloat
+% command of the stfloats package.
+
+
+% conference papers do not normally have an appendix
+
+
+% use section* for acknowledgement
+% \section*{Acknowledgment}
+
+% The authors would like to thank...
+% more thanks here
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+% \IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+% \IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+\bibliographystyle{IEEEtran} \bibliography{paper}
+%\bibliographystyle{IEEEtran} \bibliography{IEEEabrv,paper}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+
+% \begin{thebibliography}{1}
+% 
+% \bibitem{IEEEhowto:kopka}
+% H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+% 
+% \end{thebibliography}
+
+% that's all folks
+\end{document}
