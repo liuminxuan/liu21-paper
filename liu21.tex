@@ -350,17 +350,17 @@
 % provided by users
 \usepackage{psfrag}
 \usepackage{amssymb}
-\usepackage{theorem}
+%\usepackage{theorem}
 \def\comment#1{}
 \usepackage{fancyvrb}
 \usepackage{alltt}
 \usepackage{listings}
 \usepackage{url}
 \usepackage[linesnumbered]{algorithm2e}
-\usepackage{program}
-\usepackage{array}
+%\usepackage{program}
+%\usepackage{array}
 \usepackage{hyperref}
-\usepackage{microtype}
+%\usepackage{microtype}
 %\usepackage{algorithm}
 %\usepackage{algorithmic}
 
@@ -779,86 +779,93 @@ In this state, through lane vehicles and non-though lane vehicles are allowed to
 %Furthermore, to make it more abstract, some information, such as vehicle speed, position on road, are ignored.
 Based on the merging protocol described in the last section, we abstract some parts to make another version namely abstract merging protocol ({\it a-merging protocol}).
 Our target is to conduct model checking to check that whether the protocol enjoy some desired properties such as mutual exclusion property (i.e., there is at most one vehicle crossing the merge point at any given time).
-We use two queues to manage the vehicles on two lanes, status represents the vehicle position.
+We use two separate queues to manage the vehicles on two lanes.
+Each vehicle is attached with one of six statuses: \textit{running}, \textit{approaching}, \textit{stopped}, \textit{crossing}, \textit{crossed}, \textit{halting}.
+The meaning of these statuses will be clear later on.
 %Therefore, basing on the \textit{merging protocol}, we designed a abstract version of the protocol called \textit{abstract merging protocol (a-merging protocol)}.
 
 %Therefore, basing on \textit{Autonomous Vehicle Protocol for Merge Points}, we designed a new protocol called \textit{Revised Autonomous Vehicle Protocol for Merge Points} .
 
 %Basing on the \textit{Autonomous Vehicle Protocol for Merge Points}, we find 
-In \textit{a-merging protocol}, there are three situations that allow non-through lane vehicle to enter the merge point: 
-(i) No vehicle on through lane is approaching the merge point; 
-(ii) Some vehicles on the through lane is approaching the merge point but it has enough space between them; 
-(iii) Through lane and non-through lane vehicle enter the merge point alternately. 
-Let us consider the status of vehicle on through lane shown in Fig.~\ref{throughLaneStatus} which has five statues. 
-Arrows mean vehicle move from one status to another status if it satisfies some conditions.
+In \textit{a-merging protocol}, there are three cases in which a non-through lane vehicle is allowed to enter the merge point: 
+(i) no vehicle on through lane is approaching the merge point; 
+(ii) some vehicles on the through lane is approaching the merge point but it has enough space between them; 
+(iii) through lane and non-through lane vehicle enter the merge point alternately. 
+
+Fig.~\ref{throughLaneStatus} graphically visualizes the transition of a through lane vehicle's status.
+%Let us consider the status of vehicle on through lane shown in Fig.~\ref{throughLaneStatus} which has five statues. 
+Each arrow represents the change of vehicle's status from one value to another value if some conditions denoted by a number are satisfied.
 
 \begin{figure}[h]
 \begin{center}
 \scalebox{0.28}{\includegraphics{Pictures/throughLane.pdf}}
 \end{center}
-\caption{Statuses of vehicle on the through lane}
+\caption{Transition of a through lane vehicle's status}
 \label{throughLaneStatus}
 \end{figure}
 
-Conditions are represented by numbers as follows:
+Conditions denoted by numbers are as follows:
 \begin{enumerate}[]
-    \item vehicle is approaching the merge point. %1
-    \item no vehicle is crossing the merge point and whole system is in Fully-prioritized state. %2
-    \item vehicle crossed the merge point. %3
-    \item number of through lane vehicle equals or greater than one explicit number and no vehicle is crossing the merge point.  %4
-    \item whole system is in Fair state and through lane vehicle's turn and no vehicle is crossing the merge point. %5
-    \item whole system is in Fair state and non-through lane vehicle's turn. %6
-    \item whole system is not in Fair state. %7
-    \item whole system is in Fair state and through lane vehicle's turn and no vehicle is crossing the merge point. %8
+    \item the vehicle is approaching the merge point. %1
+    \item there is no vehicle crossing the merge point and the system is in a fully-prioritized state. %2
+    \item the vehicle crossed the merge point. %3
+    \item the through lane is congested (i.e., the number of vehicles running on the through lane greater than a specific number), and there is no vehicle crossing the merge point.  %4
+    \item the system is in a fair state, and it is the through lane vehicle's turn, and there is no vehicle crossing the merge point. %5
+    \item the  system is in a fair state and it is the non-through lane vehicle's turn. %6
+    \item the  system is not in a fair state. %7
+    \item the system is in a fair state, and it is the through lane vehicle's turn, and there is no vehicle crossing the merge point. %8
 \end{enumerate}
 
-Initially, vehicles on through lane are in \textit{running} status which mean vehicles are far away from the merge point. 
-The status of vehicle will change to \textit{approaching} if vehicle is approaching to the merge point.
-If the whole system is not in Fair state, vehicle will change to \textit{crossing} status from \textit{approaching} status when no vehicle crossing merge point. 
-After that, the status of vehicle on through lane will go to \textit{crossed} status. 
-From condition 4 to condition 8, the whole system goes to the fair state, vehicle on through lane firstly check whether it is through lane's turn. 
-If it is the through lane's turn, vehicle changes from \textit{approaching} status to \textit{crossing} status. 
-Otherwise, vehicle on the through lane changes to \textit{halting} status from \textit{approaching} status and stop before the merge point waiting until through lane's turn.
+Initially, each through lane vehicle has \textit{running} status, which mean that the vehicle is far away from the merge point.
+The status of a vehicle change to \textit{approaching} from \textit{running} if the vehicle is approaching to the merge point.
+If the system is not in a fair state, the vehicle's status change to \textit{crossing} from \textit{approaching} when there is no vehicle crossing merge point. 
+Right after crossing the merge point, the status of it change to \textit{crossed}. 
+From condition 4) to condition 8), the system falls into a fair state, the vehicle first check whether it is its turn or not. 
+If it is the through lane's turn, vehicle changes its status from \textit{approaching} to \textit{crossing}. 
+On the other hand, it changes its status to \textit{halting} from \textit{approaching}, and stops right before the merge point waiting until the through lane's turn.
 
 \begin{figure}[h]
 \begin{center}
 \scalebox{0.28}{\includegraphics{Pictures/nonThroughLane.pdf}}
 \end{center}
-\caption{Statuses of vehicle on the non-through lane}
+\caption{Transition of a non-through lane vehicle's status}
 \label{nonThroughLaneStatus}
 \end{figure}
 
-Fig.~\ref{nonThroughLaneStatus} showing status transition of vehicles on non-through lane.
+Fig.~\ref{nonThroughLaneStatus} shows the transition of a non-through lane vehicle's status.
 Conditions are represented by numbers as follows:
-\begin{enumerate}
-    \item vehicle is approaching the merge point. %1
-    \item through lane vehicle is approaching the merge point and whole system is not in Fair state. %2
-    \item no vehicle on through lane is approaching the merge point and whole system is not in Fair state and no vehicle is crossing the merge point. %3
-    \item vehicle crossed the merge point. %4
-    \item no vehicle on through lane is approaching the merge point and whole system is not in Fair state and no vehicle is crossing the merge point. %5
-    \item whole system is in Semi-prioritized state and no vehicle is crossing the merge point. %6
-    \item whole system is in Fair state and non-through lane vehicle's turn and no vehicle is crossing the merge point. %7
-    \item whole system is in Fair state and through lane vehicle's turn. %8
-    \item whole system is not in Fair state. %9
-    \item whole system is in Fair state and through lane vehicle's turn. %10
-    \item whole system is in Fair state and non-through lane vehicle's turn and no vehicle is crossing the merge point. %11
-    \item whole system is in Fair state and non-through lane vehicle's turn and no vehicle is crossing the merge point. %12
-\end{enumerate}
+\begin{itemize}
+    \item[a)] the vehicle is approaching the merge point. %1
+    \item[b)] there exists a through lane vehicle that is approaching the merge point, and the system is not in a fair state. %2
+    \item[c)] there is no vehicle on the through lane that is approaching the merge point, and the system is not in a fair state, and there is no vehicle crossing the merge point. %3
+    \item[d)] the vehicle crossed the merge point. %4
+    \item[e)] there is no vehicle on through lane that is approaching the merge point, and the system is not in a fair state, and there is no vehicle crossing the merge point. %5
+    \item[f)] the system is in a semi-prioritized state, and there is no vehicle crossing the merge point. %6
+    \item[g)] the system is in a fair state, and it is the non-through lane vehicle's turn, and there is no vehicle crossing the merge point. %7
+    \item[h)] the system is in a fair state, and it is the through lane vehicle's turn. %8
+    \item[i)] the system is not in a fair state. %9
+    \item[j)] the system is in a fair state, and it is the through lane vehicle's turn. %10
+    \item[k)] the system is in a fair state, and it is the non-through lane vehicle's turn, and there is no vehicle crossing the merge point. %11
+    \item[l)] the system is in a fair state, and it is the non-through lane vehicle's turn, and there is no vehicle crossing the merge point. %12
+\end{itemize}
 
-Initially, vehicles on non-through lane start from \textit{running} status.
-It transfers to \textit{approaching} status when it approaches the merge point.
-Let us firstly consider the whole system is not in Fair sate.
-In Fully-prioritized state, vehicle on non-through lane initially has lower priority than vehicle on through lane.
-Therefore, vehicle on non-through lane changes to \textit{stopped} status when there are some vehicles on through lane approaching to the merge point.
-If no vehicle on through lane has \textit{approaching} status, the vehicle on non-through lane moves to \textit{crossing} status from \textit{stopped} status.
-There exists space between the merge point and the vehicle whose status is \textit{approaching} on through lane, it refers to semi-prioritized state. 
-Then the vehicle on non-through lane changes its status to \textit{crossing} from \textit{stopped}
+Initially, all non-through lane vehicles receive \textit{running} as their statuses.
+It changes to \textit{approaching} status when it approaches the merge point.
+Let us consider the case when the system is in a fully-prioritized state first.
+The non-through lane vehicle initially has lower priority than other vehicles running on the through lane.
+Therefore, its status changes to \textit{stopped} from \textit{approaching} when there exists another through lane vehicle approaching to the merge point.
+If there does not exist a vehicle running on the through lane with \textit{approaching} status, the vehicle changes its status to \textit{crossing} from \textit{stopped}.
+
+The second case is when the system is in a fully-prioritized state.
+If there exists a space between the merge point and another through lane vehicle whose status is \textit{approaching}, 
+the vehicle changes its status to \textit{crossing} from \textit{stopped}.
 %If vehicle on non-through lane finds no vehicle on through lane is approaching to the merge point, it will go to \textit{crossing} status from \textit{stopped} status. 
 %If vehicle on non thorough lane find space before the merge point it knows Semi-prioritized state comes and it changes to \textit{crossing} status from \textit{stopped} status. After vehicle crossed the merge point, it moves to \textit{crossed} status.
 
-While vehicle on through lane changes to the Fair state, vehicle on non-through lane also moves to Fair state. 
-In this state, if it is through lane vehicle's turn, non-though lane vehicle moves to \textit{halting} status from \textit{approaching} status or \textit{stopped} status. 
-On the other side, if it is non-through lane vehicle's turn, vehicle on non-through lane changes to \textit{crossing} status from \textit{approaching}, \textit{stopped} or \textit{halting} status. 
+When the system in a fair state, which is the last case.
+%While vehicle on through lane changes to the Fair state, vehicle on non-through lane also moves to Fair state. 
+If it is the through lane vehicle's turn, the vehicle's status changes to \textit{halting} from \textit{approaching} or \textit{stopped}. 
+On the other hand, it changes the status to \textit{crossing} from \textit{approaching}, \textit{stopped} or \textit{halting}. 
  
 
 
