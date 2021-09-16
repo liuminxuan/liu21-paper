@@ -374,8 +374,8 @@
 % can use linebreaks \\ within to get better formatting as desired
 \title{Formal Specification and Model Checking \\the Revised Autonomous Vehicle
 Merging Point Protocol
-\thanks{This work was partially supported by }
-\thanks{DOI reference number: 10.18293/DMSVIVA2021-004 }
+%\thanks{This work was partially supported by }
+%\thanks{DOI reference number: 10.18293/DMSVIVA2021-004 }
 }
 
 % author names and affiliations
@@ -437,7 +437,9 @@ Email: \{ogata\ liuminxuan\}@jaist.ac.jp}
 \maketitle
 
 \begin{abstract}
-We have revised the Autonomous  Vehicle  Protocol  for Merge Points and reported some case studies in our revised protocol and formal specified it in Maude. We also model checked our formal specification with Maude model checking facilities. 
+Self-driving vehicles are promise transportation of the future providing many conveniences for people.
+
+We have revised the Autonomous  Vehicle  Protocol  for Merge Points and reported some case studies in our revised protocol and formal specified it in Maude. We also model checked our formal specification with Maude model checking facilities.
 
 %We have revised SMGA so as to handle composite data. 
 %SMGA is a tool that mainly supports humans in visually perceiving the characteristics/properties of systems/protocols. Those characteristics could be used as lemmas to formally verify that the systems/protocols enjoy desired properties. The core task of the tool is to design a state picture that helps humans better understanding the systems/protocols and/or conjecturing the characteristics. 
@@ -471,25 +473,35 @@ merging protocol; a-merging protocol; Maude; model checking
 \setlength{\parindent}{1em}
 \section{Introduction}
  \label{sect_intro}
-Self-driving vehicle technologies have been more and more concentrated all around the world.
-These years, with the development of self-driving systems, there have been inventing many kinds of technologies that make it possible for vehicles to do many things, such as some various kinds of protocols in order to make self-driving system safer and more efficient. 
+In recent years, there is a subtle amount of attention being focused on building self-driving vehicles all around the world.
+In addition to the necessary hardware, the software technologies behind are considered as the key point of any self-driving system.
+Any self-driving vehicle must be fully controlled so that it can not only run on the straight road but also is able to safely change to another lane, pass through an 4-way intersection, or merge lane through a merge point, just to mention a few.
+Research in self-driving technology has been intensively learned, resulting in more and more safe and efficient protocols/systems dedicated to resolving such challenges.
 
-A \textit{merging protocol} \cite{10.1145/3055004.3055028} is one of them. The merging protocol applies for two lanes' vehicles merging into one lane. It bases on vehicle-to-vehicle communications(V2V) system. Authors reported that this protocol is safe and efficient, but V2V system cannot guarantee the network is stable.
+%~\cite{10.1145/3055004.3055028} have proposed the protocol called merging protocol.
+A \textit{merging protocol} \cite{10.1145/3055004.3055028} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
+In the protocol, self-driving vehicles are assumed to use both vehicle-to-vehicle (V2V) communications and
+sensor-based perception systems.
+According to the paper, the authors claimed that the protocol is safe and efficient.
 
-Therefore, the protocol needs to be revising.
-We use semaphore instead of using sending or receiving messages to control self-driving vehicles. 
-This revised version allows vehicles to query the controller of the merge point at any time.
-We have conducted some case studies in which our revised protocol in Maude, a rewriting logic-based specification/programming language, and model checked with the Maude model checking facilities (a reach- ability analyzer and an LTL model checker).
+In the present paper, our target aims to formally check that the merging protocol enjoys some desired properties or not. For example, we are most interested in the mutual exclusion (or non-collision) property, which says that is not more than one vehicle located at the merge point at any time.
+This property is really important since if two self-driving vehicles are allowed to enter the merge point simultaneously, they will collide with each other, leading to an accident.
+However, we first revise the protocol to make our version distinguish from the original \textit{merging protocol} in \cite{10.1145/3055004.3055028} by abstract some concepts.
+For example, we use semaphore instead of using sending or receiving messages to control self-driving vehicles. 
+We also allows vehicles to make a query to the controller of the merge point at any time.
+Then, we formally specify the protocol in Maude~\cite{Clavel2007LNCS}, a rewriting logic-based specification/programming, and conduct model checking to confirm that whether the protocol enjoys our desired properties.
+The experiments with six vehicles participarting in shows that the protocol enjoys the mutual exclusion property. 
 
-The rest of the paper is organized as  follows. Sect.\,\ref{sect_Prel}
+The rest of this paper is organized as follows. Sect.\,\ref{sect_Prel}
 mentions some preliminaries such as state machines, and Maude.
 Sect.\,\ref{sect_oriproto} introduces the \textit{Autonomous Vehicle Protocol for Merge Points} protocol.
-Sect.\,\ref{sect_reviproto} describes the reasons why we propose the revised protocol and its introduction.
+Sect.\,\ref{sect_reviproto} describes our revised version of the protocol.
 In Sect.\,\ref{sect_formal}, we specify our proposed protocol in Maude and model check some properties in Sect.\,\ref{sect_model}.
 Sect.\,\ref{sect_Relate} mentions some related work.
 Finally, we conclude the present paper in Sect.\,\ref{concl_sect}.
 
-
+The specification of the protocol in Maude presented in this
+paper is available at \url{http://}.
 
 
 \section{Preliminaries}

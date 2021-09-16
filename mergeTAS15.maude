@@ -216,7 +216,7 @@ mod MTAS15 is
 )***
 
     --- delete yield in queue
-    crl [fair_space1] : {(gstat: nFin) (switch: B1,B2,fairT,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,yield) OCs} 
+    crl [fair_space] : {(gstat: nFin) (switch: B1,B2,fairT,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,yield) OCs} 
                      => {(gstat: nFin) (switch: B1,B2,
                      (if VS == empq then noFair else fairT fi), B4,numOfVeInTLane) (lane[L]: VS) OCs} 
         if L == Through .
