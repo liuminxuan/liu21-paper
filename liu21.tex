@@ -798,7 +798,7 @@ Each arrow represents the change of vehicle's status from one value to another v
 
 \begin{figure}[h]
 \begin{center}
-\scalebox{0.28}{\includegraphics{Pictures/throughLane.pdf}}
+\scalebox{0.4}{\includegraphics{Pictures/throughLane.pdf}}
 \end{center}
 \caption{Transition of a through lane vehicle's status}
 \label{throughLaneStatus}
@@ -826,7 +826,7 @@ On the other hand, it changes its status to \textit{halting} from \textit{approa
 
 \begin{figure}[h]
 \begin{center}
-\scalebox{0.28}{\includegraphics{Pictures/nonThroughLane.pdf}}
+\scalebox{0.36}{\includegraphics{Pictures/nonThroughLane.pdf}}
 \end{center}
 \caption{Transition of a non-through lane vehicle's status}
 \label{nonThroughLaneStatus}
@@ -1347,15 +1347,17 @@ if L == Through .
 
  
 \section{Model Checking}
- \label{sect_model}
-Our \textit{Revised Autonomous Vehicle Protocol for Merge Points} has two desired properties the protocol should enjoy.
+\label{sect_model}
+Our \textit{a-merging} protocol has three desired properties the protocol should enjoy.
 \begin{itemize}
-    \item \textit{Mutual exclusion - No vehicles in merge point at the same time}
-    \item \textit{Deadlock freedom - If a vehicle is trying to cross the merge point, a vehicle, may not the same one, finally crossed the intersection}
+    \item \textit{Mutual exclusion} - No vehicles in merge point at the same time.
+    \item \textit{Deadlock freedom} - If a vehicle is trying to cross the merge point, a vehicle, may not the same one, finally crossed the intersection.
+    \item \textit{Starvation freedom} - If a vehicle is trying to cross the merge point, then the vehicle must finally pass the merge point in finite time.
 \end{itemize}
 
-Firstly, we need a initial state that can cover all three states in our \textit{Revised Autonomous Vehicle Protocol for Merge Points}.
-Therefore, we put two space and three vehicles on the through lane, one space and three vehicles on the non-through lane.
+%We need an initial state that can cover all three states in our \textit{Revised Autonomous Vehicle Protocol for Merge Points}.
+%Therefore, we put two space and three vehicles on the through lane, one space and three vehicles on the non-through lane.
+To cover all situations (three states) in the \textit{a-merging} protocol, we assume that two spaces and three vehicles on the through lane, one space and three vehicles on the non-through lane.
 The \verb!init! is shown as follows:
 
 \begin{footnotesize}
@@ -1373,6 +1375,8 @@ noFair,noVeInNTLane,0)} .
 \end{verbatim}
 \end{footnotesize}
 
+\subsection{Mutual exclusion}
+
 The \textit{Mutual exclusion} property can be checked by the following search commmand:
 
 \begin{footnotesize}
@@ -1383,10 +1387,12 @@ init =>* {(v[VI]: LN, crossing)
 \end{verbatim}
 \end{footnotesize}
 
-The \verb!MTAS15! is the specification of the revised protocol.
+The \verb!MTAS15! is the specification of the \textit{a-merging} protocol.
 The search commands tries to find a state from the initial state \verb!init! such that two vehicle is crossing the merge point.
-It does not find any such states which means our \textit{Revised Autonomous Vehicle Protocol for Merge Points} enjoys the \textit{Mutual exclusion} property for the initial state we set.
+It does not find any such states which means our \textit{a-merging} protocol enjoys the \textit{Mutual exclusion} property for the initial state.
 
+
+\subsection{Deadlock freedom}
 The \textit{Deadlock freedom} can be checked by the following commend:
 
 \begin{footnotesize}
@@ -1397,21 +1403,56 @@ search [1] in MTAS15 : init =>! {OCs} .
 
 This command tries to find a state that cannot let all vehicles crossed the merge point. 
 It does not find any such state.
-Therefore, our \textit{Revised Autonomous Vehicle Protocol for Merge Points} also enjoy the \textit{Deadlock freedom} property for the \verb!init!.
+Therefore, our \textit{a-merging} protocol also enjoy the \textit{Deadlock freedom} property for the \verb!init!.
 
+
+\subsection{Starvation freedom}
+To model check that the \textit{a-merging} protocol enjoys the \textit{Starvation freedom}, we need to define $P_{a-merging}$ and $L_{a-merging}$. 
+$P_{a-merging}$ consists of one atomic proposition \verb!fin!.
+$L_{a-merging}$ is defined as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+eq {(gstat: fin) OCs} |= fin = true .
+eq {OCs} |= PROP = false [owise] .
+\end{verbatim}
+\end{footnotesize}
+
+where \verb!PREP! is a Maude variable of atomic propositions. 
+The two equations mean that for all states $s$ $\in$ $S_{a-merging}L_{a-merging}(s)$ = {\verb!fin!} if and only if $s$ contains (\verb!gstat : fin!). 
+The \textit{Starvation freedom} property is then defined as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+eq halt = <> fin .
+\end{verbatim}
+\end{footnotesize}
+
+\noindent where \verb!<>! is the LTL eventually connective $\diamondsuit$.
+We reduce the \verb!modelCheck(init, halt)! to check if the protocol enjoys the \textit{Starvation freedom} property.
+It has no counterexample.
+Therefore, the \textit{a-merging} protocol enjoys the property for the \verb!init!.
 
  
  
 \section{Related Work}
  \label{sect_Relate}
  
-An autonomous vehicle intersection control protocol called LJPL protocol has been proposed to handle the mutual exclusion property in the intersection~\cite{LimJongBeom2018Aedm}.
-The authors design two type of lanes: concurrent and conflict lanes. 
-The protocol allows that the vehicles on concurrent lanes can enter the intersection simultaneously while the vehicles on conflict lanes cannot enter the intersection simultaneously.
-M.N.Aung, et.al~\cite{DBLP:conf/seke/AungP019} has specified and model checked the LJPL protocol in Maude.
-They have revised the protocol to avoid the deadlock state that cannot decide the order of two vehicle on two conflict lanes have same time arrival.
-In our case, we also use Maude to model check some properties of our proposed protocol however, it is not enough to guarantee the general . 
-We need 
+ An autonomous vehicle intersection control protocol called LJPL protocol has been proposed to handle the mutual exclusion property in the intersection~\cite{LimJongBeom2018Aedm}.
+ The authors design two type of lanes: concurrent and conflict lanes. 
+ The protocol allows that the vehicles on concurrent lanes can enter the intersection simultaneously while the vehicles on conflict lanes cannot enter the intersection simultaneously.
+ The intersection in the LJPL protocol is applied to the traffic which containing eight lanes, while the \textit{merging} protocol or \textit{a-merging} protocol focuses on two lanes.
+ M.N.Aung, et.al~\cite{DBLP:conf/seke/AungP019} has specified and model checked the LJPL protocol in Maude.
+ They have revised the protocol to avoid the deadlock state that cannot decide the order of two vehicle on two conflict lanes have same time arrival.
+ In our case, we also use Maude to model check some properties of our protocol.
+  
+ Vaio, et. al.~\cite{8790807} have proposed a protocol to handle the intersection which may contain 12 lanes.
+ They define Conflicting Area (CA) where collisions could occur, and Cooperative Zone (CZ) where each vehicle is able to communicate with its neighbors. 
+ The authors describe their problem into undirected graph where a node represents a vehicle and an edge represents a communication link between two vehicles.
+ The experiment uses three autonomous vehicle to confirm their effective theoretical analysis.
+ Currently, we do not find any other works to use formal methods for this work.
+ One piece of our future is to specify this protocol and make it more reliable by formal methods.
+ 
  
 
 
@@ -1424,13 +1465,11 @@ We need
 \section{Conclusion}
 \label{concl_sect}
 
-We have proposed a protocol based on the \textit{Autonomous Vehicle Protocol for Merge Points}~\cite{10.1145/3055004.3055028}, formally specified and conducted some experiments by model checking in Maude.
+We have proposed a protocol call \textit{a-merging} protocol based on the a merging protocol~\cite{10.1145/3055004.3055028}, formally specified and conducted some experiments by model checking in Maude.
 %We have revised the \textit{Autonomous Vehicle Protocol for Merge Points} \cite{10.1145/3055004.3055028} and some case studies in our revised protocol and formal specified it in Maude.
 %We also model checked our formal specification with Maude model checking facilities.
-We have encountered the state explosion problem when we tried to put more vehicle running on two lanes to model check our revised protocol enjoys some properties in other situations.
-In the future, we need to use theorem proving, such as CafeOBJ~\cite{}, to prove our proposed protocol enjoys some desired properties.
-
-
+We have encountered the state explosion problem when we tried to put more vehicle running on two lanes to model check our abstract protocol enjoys some properties in other situations.
+In the future, we need to use theorem proving, such as CafeOBJ~\cite{DiaconescuF98}, to prove our proposed protocol enjoys some desired properties in general.
 
 
 
