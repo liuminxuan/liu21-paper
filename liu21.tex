@@ -913,7 +913,7 @@ To formalize the protocol, we use four observable components as follows:
 	When it is \verb!fin!, all vehicles concerned have crossed the intersection.
 \end{itemize}
 
-We use 22 rewrite rules to define the transitions of the protocol.
+We use 25 rewrite rules to define the transitions of the protocol.
 %Let us consider a case such that the vehicle approaches the merge point, the status of the vehicle changes from the \verb!running! status to the \verb!approaching! status. 
 %This case corresponds to condition 1 of two lanes.
 %We use four rules to specify this case in which
@@ -1139,7 +1139,7 @@ if L == Nothrough .
 \end{verbatim}
 \end{small}
 
-There are some more rewrite rules to completely define the set of transition in this case.
+There are some more rewrite rules to completely define the set of transitions in this case.
 All of them can be found in the webpage shown in the Sect.~\ref{sect_intro}.
 
 \subsection{A vehicle leaves the merge point when the system is in a fully-prioritized or semi-prioritized state}
@@ -1200,147 +1200,159 @@ The rewrite rule says that when a non-through lane vehicle leaving the merge poi
 
 
 \subsection{The system is in a fair state}
+The system changes to a fair state if the traffic is congested, that is whem the total number of vehicles running on the through lane is greater than some specific value.
+The following rewrite rule specifies this kind of transitions:
 
-The fair state in the \textit{merging protocol} appears when the system finds the traffic is congested, and a vehicle on through lane gives way to non-through lane. 
-In the a-merging protocol, we define the congestion by the number of vehicles as a constant (3 is used in the paper) on through lane. 
-It refers that if there exist vehicles on both lanes and at least three vehicles on through lane, the system moves to fair state.
-The situation refers to condition 5 of through lane and specified as following rule.
+%In the present paper, we take 3 as that specific value.
+%
+%It refers that if there exist vehicles on both lanes and at least three vehicles on through lane, the system moves to fair state.
+%The situation refers to condition 5 of through lane and specified as following rule.
 
 %The whole system moves to Fair state following the condition 5 of through lane. 
 %In our formal specification, we set the explicit number as 3. 
 %showing as follows:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
 crl [fair_T_first_crossing] : 
 {(gstat: nFin) 
 (switch: noVehicleCrossing,B2,
 noFair,veInNTLane,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
+(lane[L]: (VI ; VS)) (v[VI]: L,approaching) 
+OCs} 
 => {(gstat: nFin) 
 (switch: vehicleCrossing,B2,
 fairT,veInNTLane,numOfVeInTLane) 
 (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
 if L == Through /\ numOfVeInTLane >= 3 .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-\noindent We not only use the third variable of \verb!switch! to show the Fair state, but also use it to control two lane's turn when it in fair state. 
-\verb!fairT! means it is through lane's turn while \verb!fairN! means non-through lane's turn. 
-The formal specification is shown as follows:
+\noindent
+The rewrite rule says that when the number of vehicles running on the through lane is greater than or equals to 3 (a specific value), the system changes to a fair state with the through lane's vehicle turn first, and concurrently the top vehicle on the through lane is allowed to enter the merge point.
+%\noindent We not only use the third variable of \verb!switch! to show the Fair state, but also use it to control two lane's turn when it in fair state. 
+%\verb!fairT! means it is through lane's turn while \verb!fairN! means non-through lane's turn. 
+%The formal specification is shown as follows:
 
-\begin{footnotesize}
+The rewrite rule \verb!fair_T_crossing! specifies the set of transitions 5) and 8) explained in the previous section.
+That is when the system is in a fair state, it is the through lane vehicle's turn, and the status of top of the though lane queue is \verb!halting! or \verb!approaching!, its status will be changed to \verb!crossing!, meaning that it is allowed to cross the merge point.
+The rewrite rule is defined as follows:
+
+\begin{small}
 \begin{verbatim}
- crl [fair_T_crossing2] : 
- {(gstat: nFin) (switch: noVehicleCrossing,B2,
- fairT,veInNTLane,numOfVeInTLane) 
- (lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
-=> {(gstat: nFin) (switch: vehicleCrossing,B2,
-fairT,veInNTLane,B5) 
+crl [fair_T_crossing] : {(gstat: nFin)
+(switch: noVehicleCrossing,B2,fairT,
+veInNTLane,numOfVeInTLane)
+(lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
+=> {(gstat: nFin) 
+(switch: vehicleCrossing,B2,fairT,
+veInNTLane,numOfVeInTLane) 
 (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
-if L == Through .
-
-crl [fair_N_crossing3] : 
-{(gstat: nFin) (switch: noVehicleCrossing,B2,
-fairN,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
-=> {(gstat: nFin) (switch: vehicleCrossing,B2,
-fairN,B4,B5) 
-(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
-if L == Nothrough .
+if L == Through /\ 
+(VeSt == approaching or VeSt == halting) .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-\noindent Finally, let us consider the crossed vehicle in fair state. 
-When the vehicle exits the merge point, we not only need to poll it out of the queue, but also hand over the crossing right pass to the other lane, if it is not the last vehicle in queue.
-However, if it is the last vehicle, we move the whole system to the initial state, which is Fully-priority state.
-Therefore, our formal specification is shown as follows:
+The rewrite rule \verb!fair_N_crossing! specifies the set of transitions g), k), and l) explained in the previous section.
+That is when the system is in a fair state, it is the non-through lane vehicle's turn, and the status of top of the non-though lane queue is \verb!halting! or \verb!approaching! or \verb!stopped!, its status will be changed to \verb!crossing!, meaning that it is allowed to cross the merge point.
+The rewrite rule is defined as follows:
 
-\begin{footnotesize}
+\begin{small}
+	\begin{verbatim}
+crl [fair_N_crossing] : {(gstat: nFin) 
+(switch: noVehicleCrossing,B2,fairN,
+veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
+=> {(gstat: nFin) 
+(switch: vehicleCrossing,B2,fairN,
+veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
+if L == Nothrough /\ (VeSt == approaching 
+or VeSt == stopped or VeSt == halting) .
+\end{verbatim}
+\end{small}
+
+When a vehicle leaves the merge point, we not only need to poll it out of the queue, but also need to hand over the turn to the other lane, if it is not the last vehicle in queue.
+On the other hand, if it is the last vehicle, we change the system back to a fully-priority state.
+Two rewrite rules are introduced as follows:
+
+\begin{small}
 \begin{verbatim}
-crl [fair_T_crossed1] : 
-{(gstat: nFin) (switch: vehicleCrossing,B2,
-fairT,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VI' ; VS))
+crl [fair_T_crossed] : {(gstat: nFin) 
+(switch: vehicleCrossing,B2,fairT,B4,
+numOfVeInTLane) (lane[L]: (VI ; VS)) 
 (v[VI]: L,crossing) OCs} 
-=> {(gstat: nFin) (switch: noVehicleCrossing,B2,
-fairN,B4,sd(numOfVeInTLane,1)) 
-(lane[L]: (VI' ; VS)) (v[VI]: L,crossed) OCs} 
+=> {(gstat: nFin) (switch: noVehicleCrossing,
+(if VS == empq then noSemiPrioritized else B2 
+fi), 
+(if VS == empq then noFair else fairN fi), 
+B4,sd(numOfVeInTLane,1)) 
+(lane[L]: VS) (v[VI]: L,crossed) OCs} 
 if L == Through .
+\end{verbatim}
+\end{small}
 
-crl [fair_T_crossed2] :
-{(gstat: nFin) (switch: vehicleCrossing,B2,
-fairT,B4,numOfVeInTLane) 
-(lane[L]: (VI ; empq)) (v[VI]: L,crossing) OCs} 
-=> {(gstat: nFin) 
-(switch: noVehicleCrossing,noSemiPrioritized,
-noFair,B4,0) (lane[L]: empq) 
+\begin{small}
+	\begin{verbatim}
+crl [fair_N_crossed] : {(gstat: nFin) 
+(switch: vehicleCrossing,B2,fairN,B4,
+numOfVeInTLane) (lane[L]: (VI ; VS)) 
+(v[VI]: L,crossing) OCs} 
+=> {(gstat: nFin) (switch: noVehicleCrossing,
+(if VS == empq then noSemiPrioritized else B2 
+fi), 
+(if VS == empq then noFair else fairT fi), 
+(if VS == empq then noVeInNTLane else B4 fi),
+numOfVeInTLane) (lane[L]: VS) 
 (v[VI]: L,crossed) OCs} 
-if L == Through .
-
- crl [fair_N_crossed1] : 
- {(gstat: nFin) (switch: vehicleCrossing,B2,
- fairN,B4,numOfVeInTLane) 
- (lane[L]: (VI ; VI' ; VS)) 
- (v[VI]: L,crossing) OCs} 
-=> {(gstat: nFin) (switch: noVehicleCrossing,B2,
-fairT,B4,numOfVeInTLane) 
-(lane[L]: (VI' ; VS)) (v[VI]: L,crossed) OCs} 
-if L == Nothrough .
-
-crl [fair_N_crossed2] :
-{(gstat: nFin) (switch: vehicleCrossing,B2,
-fairN,B4,numOfVeInTLane) 
-(lane[L]: (VI ; empq)) (v[VI]: L,crossing) OCs} 
-=> {(gstat: nFin) 
-(switch: noVehicleCrossing,noSemiPrioritized,
-noFair,noVeInNTLane,numOfVeInTLane) 
-(lane[L]: empq) (v[VI]: L,crossed) OCs} 
 if L == Nothrough .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-\noindent In Fair state, the traffic on the through lane is congested. 
-Therefore, we use \verb!switch! to protect space from approaching the merge point in our formal specification.
-However, there is a situation that space has already in the queue of the through lane when it in Fair state. 
-We delete the space when it comes to that situation to keep the order correctly. 
-If it is the last element in the queue of the through lane, we move the state back to the Fully-prioritized state.
+There are also some more rewrite rules to completely define the set of transitions when the system is in a fair state, but because of the page limitation, we cannot present all of them.
+Those rewrite rules can be found in the webpage shown in the Sect.~\ref{sect_intro}.
 
-\begin{footnotesize}
-\begin{verbatim}
-crl [fair_space1] :
-{(gstat: nFin) (switch: B1,B2,
-fairT,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VI' ; VS)) (v[VI]: L,yield) OCs} 
-=> {(gstat: nFin) (switch: B1,B2
-,fairT,B4,numOfVeInTLane) (lane[L]: VI' ; VS) OCs} 
-if L == Through .
-
-crl [fair_space2] : 
-{(gstat: nFin) (switch: B1,B2,
-fairT,B4,numOfVeInTLane) 
-(lane[L]: VI) (v[VI]: L,yield) OCs} 
-=> {(gstat: nFin) (switch: B1,B2,
-noFair,B4,numOfVeInTLane) (lane[L]: empq) OCs} 
-if L == Through .
-\end{verbatim}
-\end{footnotesize}
-
-\noindent Condition 7 in \textit{Revised Autonomous Vehicle Protocol for Merge Points} of through lane and condition 9 in \textit{Revised Autonomous Vehicle Protocol for Merge Points} of non-through lane mean vehicle in halting status should back to approaching status because halting status is the exclusive status of Fair state.
-We specify these two conditions as follow:
-
-\begin{footnotesize}
-\begin{verbatim}
-rl [fair_exit] : 
-{(gstat: nFin) (switch: B1,B2,
-noFair,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
-=> {(gstat: nFin) (switch: B1,B2,
-noFair,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) 
-(v[VI]: L,approaching) OCs} .
-if L == Through .
-\end{verbatim}
-\end{footnotesize}
+%In Fair state, the traffic on the through lane is congested. 
+%Therefore, we use \verb!switch! to protect space from approaching the merge point in our formal specification.
+%However, there is a situation that space has already in the queue of the through lane when it in Fair state. 
+%We delete the space when it comes to that situation to keep the order correctly. 
+%If it is the last element in the queue of the through lane, we move the state back to the Fully-prioritized state.
+%
+%\begin{footnotesize}
+%\begin{verbatim}
+%crl [fair_space1] :
+%{(gstat: nFin) (switch: B1,B2,
+%fairT,B4,numOfVeInTLane) 
+%(lane[L]: (VI ; VI' ; VS)) (v[VI]: L,yield) OCs} 
+%=> {(gstat: nFin) (switch: B1,B2
+%,fairT,B4,numOfVeInTLane) (lane[L]: VI' ; VS) OCs} 
+%if L == Through .
+%
+%crl [fair_space2] : 
+%{(gstat: nFin) (switch: B1,B2,
+%fairT,B4,numOfVeInTLane) 
+%(lane[L]: VI) (v[VI]: L,yield) OCs} 
+%=> {(gstat: nFin) (switch: B1,B2,
+%noFair,B4,numOfVeInTLane) (lane[L]: empq) OCs} 
+%if L == Through .
+%\end{verbatim}
+%\end{footnotesize}
+%
+%\noindent Condition 7 in \textit{Revised Autonomous Vehicle Protocol for Merge Points} of through lane and condition 9 in \textit{Revised Autonomous Vehicle Protocol for Merge Points} of non-through lane mean vehicle in halting status should back to approaching status because halting status is the exclusive status of Fair state.
+%We specify these two conditions as follow:
+%
+%\begin{footnotesize}
+%\begin{verbatim}
+%rl [fair_exit] : 
+%{(gstat: nFin) (switch: B1,B2,
+%noFair,B4,numOfVeInTLane) 
+%(lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
+%=> {(gstat: nFin) (switch: B1,B2,
+%noFair,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) 
+%(v[VI]: L,approaching) OCs} .
+%if L == Through .
+%\end{verbatim}
+%\end{footnotesize}
 
 
 

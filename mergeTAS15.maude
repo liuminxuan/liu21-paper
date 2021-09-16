@@ -224,10 +224,10 @@ mod MTAS15 is
     ---                  => {(gstat: nFin) (switch: B1,B2,noFair,B4,numOfVeInTLane) (lane[L]: empq) OCs} 
     ---                  if L == Through .
     --- Through lane: running -> approaching -> crossing or halting(fair state)
-    crl [fair_T_first_crossing1] : {(gstat: nFin) (switch: noVehicleCrossing,B2,noFair,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
+    crl [fair_T_first_crossing] : {(gstat: nFin) (switch: noVehicleCrossing,B2,noFair,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
                         => {(gstat: nFin) (switch: vehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
                     if L == Through /\ numOfVeInTLane >= 3 .
-    crl [fair_T_crossing1] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
+    crl [fair_T_crossing] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
                         => {(gstat: nFin) (switch: vehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
                     if L == Through /\ (VeSt == approaching or VeSt == halting) .
     --- crl [fair_T_crossing2] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
@@ -236,28 +236,28 @@ mod MTAS15 is
 
     --- Non-through lane in nofair state: running -> approaching -> stopped -> crossing 
     --- Non-through lane in fair state: running -> approaching (-> stopped(just change to fair state)) -> halting or crossing
-    crl [fair_N_halting1] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
+    crl [fair_N_halting] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
                         => {(gstat: nFin) (switch: noVehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
                     if L == Nothrough /\ (VeSt == approaching or VeSt == stopped) . ---> merge fair_N_halting2
 
-    crl [fair_N_crossing1] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairN,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
+    crl [fair_N_crossing] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairN,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
                         => {(gstat: nFin) (switch: vehicleCrossing,B2,fairN,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
                     if L == Nothrough /\ (VeSt == approaching or VeSt == stopped or VeSt == halting) . ---> merge fair_N_crossing2 + fair_N_crossing3
     --- crl [fair_N_crossing2] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairN,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
     ---                     => {(gstat: nFin) (switch: vehicleCrossing,B2,fairN,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
     ---                 if L == Nothrough .
 
-    crl [fair_T_halting1] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairN,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
+    crl [fair_T_halting] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairN,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
                         => {(gstat: nFin) (switch: noVehicleCrossing,B2,fairN,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
                     if L == Through .
     --- crl [fair_N_halting2] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
     ---                     => {(gstat: nFin) (switch: noVehicleCrossing,B2,fairT,veInNTLane,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
     ---                 if L == Nothrough .
     
-    crl [fair_N_crossing3] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairN,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
-                         => {(gstat: nFin) (switch: vehicleCrossing,B2,fairN,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
-                    if L == Nothrough .
-    crl [fair_T_crossed1] : {(gstat: nFin) (switch: vehicleCrossing,B2,fairT,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
+    --- crl [fair_N_crossing3] : {(gstat: nFin) (switch: noVehicleCrossing,B2,fairN,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,halting) OCs} 
+    ---                      => {(gstat: nFin) (switch: vehicleCrossing,B2,fairN,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
+    ---                 if L == Nothrough .
+    crl [fair_T_crossed] : {(gstat: nFin) (switch: vehicleCrossing,B2,fairT,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
                         => {(gstat: nFin) (switch: noVehicleCrossing,
                         (if VS == empq then noSemiPrioritized else B2 fi), 
                         (if VS == empq then noFair else fairN fi), 
@@ -266,7 +266,7 @@ mod MTAS15 is
     --- crl [fair_T_crossed2] : {(gstat: nFin) (switch: vehicleCrossing,B2,fairT,B4,numOfVeInTLane) (lane[L]: (VI ; empq)) (v[VI]: L,crossing) OCs} 
     ---                     => {(gstat: nFin) (switch: noVehicleCrossing,noSemiPrioritized,noFair,B4,0) (lane[L]: empq) (v[VI]: L,crossed) OCs} 
     ---                 if L == Through .
-    crl [fair_N_crossed1] : {(gstat: nFin) (switch: vehicleCrossing,B2,fairN,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
+    crl [fair_N_crossed] : {(gstat: nFin) (switch: vehicleCrossing,B2,fairN,B4,numOfVeInTLane) (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
                         => {(gstat: nFin) (switch: noVehicleCrossing,
                         (if VS == empq then noSemiPrioritized else B2 fi), 
                         (if VS == empq then noFair else fairT fi), 
