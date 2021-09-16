@@ -439,7 +439,7 @@ Email: \{ogata\ liuminxuan\}@jaist.ac.jp}
 \begin{abstract}
 Self-driving vehicles are promise transportation of the future providing many conveniences for people.
 Since safety is paramount for any autonomous vehicle system, there is a large number of researches have been proposed to automatically control vehicles running on public roads without any collision.
-A \textit{merging protocol} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
+The \textit{Autonomous Vehicle Protocol for Merge Points} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
 Based on that protocol, in this paper, we make some modifications by abstract some concepts.
 We then formally specify the protocol in Maude, and conduct model checking to confirm that the protocol enjoys some important properties such as the non-collision property. 
 
@@ -481,14 +481,14 @@ Any self-driving vehicle must be fully controlled so that it can not only run on
 Research in self-driving technology has been intensively learned, resulting in more and more safe and efficient protocols/systems dedicated to resolving such challenges.
 
 %~\cite{10.1145/3055004.3055028} have proposed the protocol called merging protocol.
-A \textit{merging protocol} \cite{10.1145/3055004.3055028} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
+The \textit{Autonomous Vehicle Protocol for Merge Points} \cite{10.1145/3055004.3055028} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
 In the protocol, self-driving vehicles are assumed to use both vehicle-to-vehicle (V2V) communications and
 sensor-based perception systems.
 According to the paper, the authors claimed that the protocol is safe and efficient.
 
 In the present paper, our target aims to formally check that the merging protocol enjoys some desired properties or not. For example, we are most interested in the mutual exclusion (or non-collision) property, which says that is not more than one vehicle located at the merge point at any time.
 This property is really important since if two self-driving vehicles are allowed to enter the merge point simultaneously, they will collide with each other, leading to an accident.
-However, we first revise the protocol to make our version distinguish from the original \textit{merging protocol} in \cite{10.1145/3055004.3055028} by abstract some concepts.
+However, we first revise the protocol to make our version distinguish from the original \textit{Autonomous Vehicle Protocol for Merge Points} in \cite{10.1145/3055004.3055028} by abstract some concepts.
 For example, we use semaphore instead of using sending or receiving messages to control self-driving vehicles. 
 We also allow vehicles to make a query to the controller of the merge point at any time.
 Then, we formally specify the protocol in Maude~\cite{Clavel2007LNCS}, a rewriting logic-based specification/programming, and conduct model checking to confirm that whether the protocol enjoys our desired properties.
