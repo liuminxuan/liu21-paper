@@ -372,7 +372,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Formal Specification and Model Checking \\the Revised Autonomous Vehicle
+\title{Formal Specification and Model Checking \\the Abstract Autonomous Vehicle
 Merging Point Protocol
 %\thanks{This work was partially supported by }
 %\thanks{DOI reference number: 10.18293/DMSVIVA2021-004 }
@@ -382,11 +382,11 @@ Merging Point Protocol
 % use a multiple column layout for up to two different
 % affiliations
 
-\author{\IEEEauthorblockN{Liu Minxuan, Kazuhiro Ogata}
+\author{\IEEEauthorblockN{Liu Minxuan, Dang Duy Bui, Duong Dinh Tran, Kazuhiro Ogata}
 \IEEEauthorblockA{School of Information Science\\
 Japan Advanced Institute of Science and Technology (JAIST)\\
 1-1 Asahidai, Nomi, Ishikawa 923-1292, Japan\\
-Email: \{ogata\ liuminxuan\}@jaist.ac.jp}
+Email: \{liuminxuan,bddang,duongtd,ogata\}@jaist.ac.jp}
 }
 
 %\author{\IEEEauthorblockN{Authors Name/s per 1st Affiliation (Author)}
@@ -439,7 +439,7 @@ Email: \{ogata\ liuminxuan\}@jaist.ac.jp}
 \begin{abstract}
 Self-driving vehicles are promise transportation of the future providing many conveniences for people.
 Since safety is paramount for any autonomous vehicle system, there is a large number of researches have been proposed to automatically control vehicles running on public roads without any collision.
-The \textit{Autonomous Vehicle Protocol for Merge Points} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
+An autonomous vehicle protocol for merge points or a merging protocol proposed  by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
 Based on that protocol, in this paper, we make some modifications by abstract some concepts.
 We then formally specify the protocol in Maude, and conduct model checking to confirm that the protocol enjoys some important properties such as the non-collision property. 
 
@@ -481,14 +481,14 @@ Any self-driving vehicle must be fully controlled so that it can not only run on
 Research in self-driving technology has been intensively learned, resulting in more and more safe and efficient protocols/systems dedicated to resolving such challenges.
 
 %~\cite{10.1145/3055004.3055028} have proposed the protocol called merging protocol.
-The \textit{Autonomous Vehicle Protocol for Merge Points} \cite{10.1145/3055004.3055028} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
+An autonomous vehicle protocol for merge points or a \textit{merging} protocol~\cite{10.1145/3055004.3055028} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
 In the protocol, self-driving vehicles are assumed to use both vehicle-to-vehicle (V2V) communications and
 sensor-based perception systems.
 According to the paper, the authors claimed that the protocol is safe and efficient.
 
 In the present paper, our target aims to formally check that the merging protocol enjoys some desired properties or not. For example, we are most interested in the mutual exclusion (or non-collision) property, which says that is not more than one vehicle located at the merge point at any time.
 This property is really important since if two self-driving vehicles are allowed to enter the merge point simultaneously, they will collide with each other, leading to an accident.
-However, we first revise the protocol to make our version distinguish from the original \textit{Autonomous Vehicle Protocol for Merge Points} in \cite{10.1145/3055004.3055028} by abstract some concepts.
+However, we first revise the protocol to make our version distinguish from the original \textit{merging} protocol~\cite{10.1145/3055004.3055028} by abstract some concepts.
 For example, we use semaphore instead of using sending or receiving messages to control self-driving vehicles. 
 We also allow vehicles to make a query to the controller of the merge point at any time.
 Then, we formally specify the protocol in Maude~\cite{Clavel2007LNCS}, a rewriting logic-based specification/programming, and conduct model checking to confirm that whether the protocol enjoys our desired properties.
@@ -496,7 +496,7 @@ The experiment with six vehicles participating shows that the protocol enjoys th
 
 The rest of this paper is organized as follows. Sect.\,\ref{sect_Prel}
 mentions some preliminaries such as state machines, and Maude.
-Sect.\,\ref{sect_oriproto} introduces the \textit{Autonomous Vehicle Protocol for Merge Points} protocol.
+Sect.\,\ref{sect_oriproto} introduces the \textit{merging} protocol.
 Sect.\,\ref{sect_reviproto} describes our revised version of the protocol.
 In Sect.\,\ref{sect_formal}, we specify our proposed protocol in Maude and model check some properties in Sect.\,\ref{sect_model}.
 Sect.\,\ref{sect_Relate} mentions some related work.
@@ -623,7 +623,7 @@ represents an initial state of the state machine.
  \label{sect_oriproto}
 A merge point is visualized in Fig.~\ref{mergePoint_fig}, which is the intersection of two lanes: through lane and non-through lane.
 We suppose that each lane is one way direction.
-As in the Figure, vehicles running on the through lane cannot go from left to right, while vehicles arriving from the non-through lane can only turn to run on (2).
+As in the Fig.~\ref{mergePoint_fig}, vehicles running on the through lane cannot go from left to right, while vehicles arriving from the non-through lane can only move to (2).
 Hereinafter, let us use a through lane vehicle (or non-through lane vehicle) to talk about a vehicle running on the through lane (or vehicle running on the non-through lane, respectively). 
 %If through lane and non-through lane meet at the road intersection, we regard the intersection as merge point. 
 Encountering the merge point, a through lane vehicle has higher priority than a vehicle arriving from the non-through lane because the traffic volume of the through lane is usually greater than that of the non-through lane. 
@@ -634,7 +634,7 @@ In other words, it must be ensured that there is at most one vehicle crossing th
 
 \begin{figure}[h]
 \begin{center}
-\scalebox{0.33}{\includegraphics{Pictures/merge_point.pdf}}
+\scalebox{0.5}{\includegraphics{Pictures/merge_point.pdf}}
 \end{center}
 \caption{Merge point}
 \label{mergePoint_fig}
@@ -643,7 +643,8 @@ In other words, it must be ensured that there is at most one vehicle crossing th
 To resolve the problem mentioned above, 
 S. Aoki and R. Rajkumar~\cite{10.1145/3055004.3055028} have proposed the protocol called merging protocol.
 %to prevent the collision in the merge point.
-The protocol has two versions corresponding to two traffic environments: (1) only self-driving vehicles on the traffic, (2) self-driving vehicles and human-driven vehicles on the traffic.
+The protocol has two versions corresponding to two traffic environments: (1) only self-driving vehicles on the traffic (homogeneous traffic), 
+(2) self-driving vehicles and human-driven vehicles on the traffic (heterogeneous traffic).
 In the present paper, we mainly concentrate on the first version (1). 
 The protocol requires each self-driving vehicle equiped with several necessary software systems such as navigation system or hardware devices such as sensors.
 %These equipments are required since the self-driving vehicle get the necessary information for  vehicle systems such as lane information.
@@ -829,7 +830,7 @@ In this state, through lane vehicles and non-though lane vehicles are allowed to
 %Sending and receiving messages basing on network may not fully reliable because some data may lost during the transmission. 
 %If one vehicle lose some messages sent by other vehicles, a serious collision may happen. 
 %Furthermore, to make it more abstract, some information, such as vehicle speed, position on road, are ignored.
-Based on the merging protocol described in the last section, we abstract some parts to make another version namely abstract merging protocol ({\it a-merging protocol}).
+Based on the \textit{merging} protocol described in the last section, we abstract some parts to make another version namely abstract merging protocol (\textit{a-merging} protocol).
 Our target is to conduct model checking to check that whether the protocol enjoy some desired properties such as mutual exclusion property (i.e., there is at most one vehicle crossing the merge point at any given time).
 We use two separate queues to manage the vehicles on two lanes.
 Each vehicle is attached with one of six statuses: \textit{running}, \textit{approaching}, \textit{stopped}, \textit{crossing}, \textit{crossed}, \textit{halting}.
@@ -839,9 +840,9 @@ The meaning of these statuses will be clear later on.
 %Therefore, basing on \textit{Autonomous Vehicle Protocol for Merge Points}, we designed a new protocol called \textit{Revised Autonomous Vehicle Protocol for Merge Points} .
 
 %Basing on the \textit{Autonomous Vehicle Protocol for Merge Points}, we find 
-In \textit{a-merging protocol}, there are three cases in which a non-through lane vehicle is allowed to enter the merge point: 
+In \textit{a-merging} protocol, there are three cases in which a non-through lane vehicle is allowed to enter the merge point: 
 (i) no vehicle on through lane is approaching the merge point; 
-(ii) some vehicles on the through lane is approaching the merge point but it has enough space between them; 
+(ii) some vehicles on the through lane are approaching the merge point but it has enough space between them; 
 (iii) through lane and non-through lane vehicle enter the merge point alternately. 
 
 Fig.~\ref{throughLaneStatus} graphically visualizes the transition of a through lane vehicle's status.
@@ -1252,7 +1253,7 @@ The rewrite rule says that when a non-through lane vehicle leaving the merge poi
 
 
 \subsection{The system is in a fair state}
-The system changes to a fair state if the traffic is congested, that is whem the total number of vehicles running on the through lane is greater than some specific value.
+The system changes to a fair state if the traffic is congested, that is when the total number of vehicles running on the through lane is greater than some specific value.
 The following rewrite rule specifies this kind of transitions:
 
 %In the present paper, we take 3 as that specific value.
@@ -1324,7 +1325,7 @@ or VeSt == stopped or VeSt == halting) .
 \end{verbatim}
 \end{small}
 
-When a vehicle leaves the merge point, we not only need to poll it out of the queue, but also need to hand over the turn to the other lane, if it is not the last vehicle in queue.
+When a vehicle leaves the merge point, we not only need to remove it out of the queue, but also need to hand over the turn to the other lane, if it is not the last vehicle in queue.
 On the other hand, if it is the last vehicle, we change the system back to a fully-priority state.
 Two rewrite rules are introduced as follows:
 
@@ -1426,7 +1427,7 @@ Those rewrite rules can be found in the webpage shown in the Sect.~\ref{sect_int
 \label{sect_model}
 Our \textit{a-merging} protocol has three desired properties the protocol should enjoy.
 \begin{itemize}
-    \item \textit{Mutual exclusion} - No vehicles in merge point at the same time.
+    \item \textit{Mutual exclusion} - No two vehicles in merge point at the same time.
     \item \textit{Deadlock freedom} - If a vehicle is trying to cross the merge point, a vehicle, may not the same one, finally crossed the intersection.
     \item \textit{Starvation freedom} - If a vehicle is trying to cross the merge point, then the vehicle must finally pass the merge point in finite time.
 \end{itemize}
@@ -1436,77 +1437,79 @@ Our \textit{a-merging} protocol has three desired properties the protocol should
 To cover all situations (three states) in the \textit{a-merging} protocol, we assume that two spaces and three vehicles on the through lane, one space and three vehicles on the non-through lane.
 The \verb!init! is shown as follows:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
 {(gstat: nFin) 
 (lane[Through]: empq) (lane[Nothrough]: empq) 
-(v[1]: Through,space) (v[2]: Through,space) 
-(v[3]: Nothrough,space)
-(v[4]: Through,running) (v[5]: Through,running) 
+(v[1]: Through,space) (v[3]: Nothrough,space)
+(v[2]: Through,space) (v[4]: Through,running)
+(v[5]: Through,running) 
 (v[6]: Through,running)
-(v[7]: Nothrough,running) (v[8]: Nothrough,running)
+(v[7]: Nothrough,running) 
+(v[8]: Nothrough,running)
 (v[9]: Nothrough,running)
 (switch: noVehicleCrossing,noSemiPrioritized
 noFair,noVeInNTLane,0)} .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
 \subsection{Mutual exclusion}
 
-The \textit{Mutual exclusion} property can be checked by the following search commmand:
+The \textit{mutual exclusion} property can be checked by the following search commmand:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
 search [1] in MTAS15 : 
 init =>* {(v[VI]: LN, crossing) 
-(v[VI']: LT, crossing) OCs} such that VI =/= VI' .
+(v[VI']: LT, crossing) OCs} 
+            such that VI =/= VI' .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
 The \verb!MTAS15! is the specification of the \textit{a-merging} protocol.
 The search commands tries to find a state from the initial state \verb!init! such that two vehicle is crossing the merge point.
-It does not find any such states which means our \textit{a-merging} protocol enjoys the \textit{Mutual exclusion} property for the initial state.
+It does not find any such states which means our \textit{a-merging} protocol enjoys the \textit{mutual exclusion} property for the initial state.
 
 
 \subsection{Deadlock freedom}
-The \textit{Deadlock freedom} can be checked by the following commend:
+The \textit{deadlock freedom} can be checked by the following commend:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
 search [1] in MTAS15 : init =>! {OCs} .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
 This command tries to find a state that cannot let all vehicles crossed the merge point. 
 It does not find any such state.
-Therefore, our \textit{a-merging} protocol also enjoy the \textit{Deadlock freedom} property for the \verb!init!.
+Therefore, our \textit{a-merging} protocol also enjoy the \textit{deadlock freedom} property for the \verb!init!.
 
 
 \subsection{Starvation freedom}
-To model check that the \textit{a-merging} protocol enjoys the \textit{Starvation freedom}, we need to define $P_{a-merging}$ and $L_{a-merging}$. 
-$P_{a-merging}$ consists of one atomic proposition \verb!fin!.
+To model check that the \textit{a-merging} protocol enjoys the \textit{starvation freedom}, we need to define $P_{a-merging}$ and $L_{a-merging}$. 
+$P_{a-merging}$ consists of one atomic proposition \verb!Fin!.
 $L_{a-merging}$ is defined as follows:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
-eq {(gstat: fin) OCs} |= fin = true .
+eq {(gstat: fin) OCs} |= Fin = true .
 eq {OCs} |= PROP = false [owise] .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-where \verb!PREP! is a Maude variable of atomic propositions. 
-The two equations mean that for all states $s$ $\in$ $S_{a-merging}L_{a-merging}(s)$ = {\verb!fin!} if and only if $s$ contains (\verb!gstat : fin!). 
-The \textit{Starvation freedom} property is then defined as follows:
+where \verb!PROP! is a Maude variable of atomic propositions, \verb!|=! is a Maude symbol for satisfaction relation in LTL. 
+The two equations mean that for all states $s$ $\in$ $P_{a-merging}L_{a-merging}(s)$ = {\verb!Fin!} if and only if $s$ contains (\verb!gstat : fin!). 
+The \textit{starvation freedom} property is then defined as follows:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
-eq halt = <> fin .
+eq halt = <> Fin .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
 \noindent where \verb!<>! is the LTL eventually connective $\diamondsuit$.
-We reduce the \verb!modelCheck(init, halt)! to check if the protocol enjoys the \textit{Starvation freedom} property.
-It has no counterexample.
+We run the Maude command \verb!modelCheck(init, halt)! to check whether the protocol enjoys the \textit{starvation freedom} property.
+The program returns no counterexample.
 Therefore, the \textit{a-merging} protocol enjoys the property for the \verb!init!.
 
  
