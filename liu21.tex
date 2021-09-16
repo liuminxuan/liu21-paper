@@ -824,6 +824,26 @@ From condition 4) to condition 8), the system falls into a fair state, the vehic
 If it is the through lane's turn, vehicle changes its status from \textit{approaching} to \textit{crossing}. 
 On the other hand, it changes its status to \textit{halting} from \textit{approaching}, and stops right before the merge point waiting until the through lane's turn.
 
+Fig.~\ref{space} visualizes how a non-through lane vehicles can enter the merge point during a semi-prioritized state when there is a space between two vehicles running on the through lane. 
+The blue circle represents the non-through lane vehicle, the red circle represents the through lane vehicles, and the white circle represents a space. 
+Green area denotes the merge point.
+Each vehicle or space is attached a different number.
+%Figure \ref{space}.(a) shows that vehicle 1 on the non-through lane is approaching the merge point.
+In the Fig.~\ref{space} (a), there are two through lane vehicles (i.e., \textcircled{2} and \textcircled{4}), and there is a space (i.e., \textcircled{3}) in the middle of the two vehicles that is enough to accommodate the third vehicle. 
+The vehicles \textcircled{2} and \textcircled{4} are approaching the intersection.
+According to the full-prioritized state, the vehicle \textcircled{1} needs to let the vehicles \textcircled{2} and \textcircled{4} cross the merge point first. 
+Thus, as shown in Fig.~\ref{space} (b), the vehicle \textcircled{1} stops right before the merge point, while the vehicle \textcircled{2} passes through the intersection.
+In Fig.~\ref{space} (c) and Fig.~\ref{space} (d), the vehicle \textcircled{1} enters the merge point because there exists a space on the through lane between \textcircled{2} and \textcircled{4}.
+%Fig.~\ref{space} (c) and Fig.~\ref{space} (d) show the process of the vehicles on the non-through lane find that it has enough space to join the vehicles on the through lane and enter the merge point.
+
+\begin{figure}[h]
+	\begin{center}
+		\scalebox{0.28}{\includegraphics{Pictures/space.pdf}}
+	\end{center}
+	\caption{An example of semi-prioritized state}
+	\label{space}
+\end{figure}
+
 \begin{figure}[h]
 \begin{center}
 \scalebox{0.28}{\includegraphics{Pictures/nonThroughLane.pdf}}
@@ -872,44 +892,24 @@ On the other hand, it changes the status to \textit{crossing} from \textit{appro
  
 \section{Formal Specification}
  \label{sect_formal}
-In the semi-prioritized state of the merging protocol, if there exists an enough space on through lane, a non-through lane vehicle can enter to the merge point.
-Therefore, in the specification, we use two queues for both lanes in which the element of the queue is a car or a space (space refers to enough space in our specification).
+%In the semi-prioritized state of the merging protocol, if there exists an enough space on through lane, a non-through lane vehicle can enter to the merge point.
+We use two queues to maintain the vehicles running on the through lane and non-through lane, respectively.
+Each element of the queue can be not only a vehicle, but also a space.
  %From the \textit{Revised Autonomous Vehicle Protocol for Merge Points }, we know that in the Semi-priority state, a space can accommodate a car, so we can divide the road into many small squares, and each small square can accommodate a car or a space or nothing.
-Furthermore, we use a global variable that contains 5
-Fig.~\ref{space} shows how vehicles on the non-through lane enter the merge point when there is a space on the through lane. 
-The blue circle represents the vehicle on the non-through lane, the red circle represents vehicles on the through lane, and the white circle represents a space. 
-Green area means the merge point.
-We use the number on each circle to distinguish different vehicles or spaces.
-
-%Figure \ref{space}.(a) shows that vehicle 1 on the non-through lane is approaching the merge point.
-In the Fig.~\ref{space} (a), there are two vehicles numbered 2 and 4 on the through lane, and there is enough space in the middle of the two vehicle to accommodate the third vehicle. We number this space as 3.
-Vehicles or spaces on the through lane are all approaching the meeting point.
-According to the full-prioritized state, the vehicles on the non-through lane need to let the vehicles on the through lane pass the merge point first. 
-Therefore, as shown in Fig.~\ref{space} (b), vehicle 1 stops before the merge point and the vehicle 2 passes through the merge point first.
-Fig.~\ref{space} (c) and Fig.~\ref{space} (d) show the vehicle on the non-through lane enters to merge point because there exists the space on the through lane.
-%Fig.~\ref{space} (c) and Fig.~\ref{space} (d) show the process of the vehicles on the non-through lane find that it has enough space to join the vehicles on the through lane and enter the merge point.
-
-\begin{figure}[h]
-\begin{center}
-\scalebox{0.28}{\includegraphics{Pictures/space.pdf}}
-\end{center}
-\caption{An example of semi-prioritized state}
-\label{space}
-\end{figure}
- 
+%Furthermore, we use a global variable that contains 5 
 %  (\verb!v![$vid$] : $lid$\verb!,!$vstat$\verb!,!$t$\verb!,!$lt$)
 In this paper, a state is expressed as a soup of observable components.
 To formalize the protocol, we use four observable components as follows:
 \begin{itemize}
-    \item (\verb!v[!$id$\verb!]:!$position$\verb!,!$vstat$) - $id$ is an ID (a nature number) of vehicle or space, $position$ is the lane (through lane or non-through lane) which the vehicle or space $id$ is located, $vstate$ is the space or the status of the vehicle $id$. Initially, $vstate$ is \verb!space! if it is the space, \verb!running! if it is the vehicle.
-    \item (\verb!lane[!$position$\verb!]:!$q$) - $position$ is the through lane or non-through lane and $q$ is a queue of vehicle (natural numbers) or space. Initially, $q$ is \verb!empq!
-    \item (\verb!switch:!$c$\verb!,!$semi$\verb!,!$fair$\verb!,!$nonthrough$\verb!,!$nthrough$) - $c$ contains two options \verb!vehicleCrossing! and \verb!noVehicleCrossing! which represent a vehicle is crossing the merge point or not. 
-    $semi$ is either \verb!semiPrioritized! or \verb!noSemiPrioritized! to control self-driving system in Semi-prioritized state. 
-    $fair$ contains \verb!noFair! which means the self-driving system is not in Fair state, \verb!fairT! and \verb!fairN! controls which lane's turn when it in Fair state. 
-    $nonthrough$ is either \verb!noVeInNTLane! or \verb!veInNTLane! represents the non-through lane has vehicle approaching the merge point or not. 
-    $nthrough$ is a nature number which shows the number of vehicle on through lane approaching the merge point.
-    Initially, $c$, $semi$,$fair$,$nonthrough$ and $nthrough$ are \verb!noVehicleCrossing!, \verb!noSemiPrioritized!, \verb!noFair!, \verb!noVeInNTLane! and \verb!0!, respectively 
-    \item (\verb!gstat! : $gstat$) -  where $gstat$ is either \verb!fin! or \verb!nFin!.
+    \item (\verb!v[!$id$\verb!]:!$position$\verb!,!$vstat$) - $id$ is an ID (a nature number) of a vehicle or a space, $position$ is the lane that the vehicle or the space $id$ is located (either through lane or non-through lane), $vstate$ is the status of the vehicle if it is a vehicle. Initially, $vstate$ is \verb!space! if it is a space, or \verb!running! if it is a vehicle.
+    \item (\verb!lane[!$position$\verb!]:!$q$) - $position$ is the through lane or non-through lane, and $q$ is a queue of vehicles and spaces. Initially, $q$ is \verb!empq!, which denotes an empty queue.
+    \item (\verb!switch:!$c$\verb!,!$semi$\verb!,!$fair$\verb!,!$nonthrough$\verb!,!$nthrough$) - $c$ receives one of the following two values: \verb!vehicleCrossing! indicating there is not any vehicle crossing the merge point, or \verb!noVehicleCrossing! indicating there exists a vehicle crossing the merge point.
+    $semi$ receives one of the following two values: \verb!semiPrioritized! indicating the system is in a semi-prioritized state, or \verb!noSemiPrioritized! indicating the system is in a fully-prioritized state. 
+    $fair$ receives one of the following three values: \verb!noFair! indicating the system is not in a fair state, or \verb!fairT! indicating the system is in a fair state and it is the through lane vehicle's turn, or \verb!fairN! indicating the system is in a fair state and it is the non-through lane vehicle's turn.
+    $nonthrough$ receives one of the following two values: \verb!noVeInNTLane! indicating there is not any non-through lane vehicle approaching the merge point, or \verb!veInNTLane! indicating there exists a non-through lane vehicle approaching the merge point. 
+    $nthrough$ is the total number of through lane vehicles approaching the merge point.
+    Initially, $c$, $semi$,$fair$,$nonthrough$ and $nthrough$ are \verb!noVehicleCrossing!, \verb!noSemiPrioritized!, \verb!noFair!, \verb!noVeInNTLane! and \verb!0!, respectively.
+    \item (\verb!gstat! : $gstat$) -  $gstat$ is either \verb!fin! or \verb!nFin!.
 	When it is \verb!fin!, all vehicles concerned have crossed the intersection.
 \end{itemize}
 
