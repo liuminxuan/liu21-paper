@@ -374,8 +374,8 @@
 % can use linebreaks \\ within to get better formatting as desired
 \title{Formal Specification and Model Checking \\the Revised Autonomous Vehicle
 Merging Point Protocol
-\thanks{This work was partially supported by }
-\thanks{DOI reference number: 10.18293/DMSVIVA2021-004 }
+%\thanks{This work was partially supported by }
+%\thanks{DOI reference number: 10.18293/DMSVIVA2021-004 }
 }
 
 % author names and affiliations
@@ -437,7 +437,11 @@ Email: \{ogata\ liuminxuan\}@jaist.ac.jp}
 \maketitle
 
 \begin{abstract}
-We have revised the Autonomous  Vehicle  Protocol  for Merge Points and reported some case studies in our revised protocol and formal specified it in Maude. We also model checked our formal specification with Maude model checking facilities. 
+Self-driving vehicles are promise transportation of the future providing many conveniences for people.
+Since safety is paramount for any autonomous vehicle system, there is a large number of researches have been proposed to automatically control vehicles running on public roads without any collision.
+A \textit{merging protocol} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
+Based on that protocol, in this paper, we make some modifications by abstract some concepts.
+We then formally specify the protocol in Maude, and conduct model checking to confirm that the protocol enjoys some important properties such as the non-collision property. 
 
 %We have revised SMGA so as to handle composite data. 
 %SMGA is a tool that mainly supports humans in visually perceiving the characteristics/properties of systems/protocols. Those characteristics could be used as lemmas to formally verify that the systems/protocols enjoy desired properties. The core task of the tool is to design a state picture that helps humans better understanding the systems/protocols and/or conjecturing the characteristics. 
@@ -471,68 +475,103 @@ merging protocol; a-merging protocol; Maude; model checking
 \setlength{\parindent}{1em}
 \section{Introduction}
  \label{sect_intro}
-Self-driving vehicle technologies have been more and more concentrated all around the world.
-These years, with the development of self-driving systems, there have been inventing many kinds of technologies that make it possible for vehicles to do many things, such as some various kinds of protocols in order to make self-driving system safer and more efficient. 
+In recent years, there is a subtle amount of attention being focused on building self-driving vehicles all around the world.
+In addition to the necessary hardware, the software technologies behind are considered as the key point of any self-driving system.
+Any self-driving vehicle must be fully controlled so that it can not only run on the straight road but also is able to safely change to another lane, pass through an 4-way intersection, or merge lane through a merge point, just to mention a few.
+Research in self-driving technology has been intensively learned, resulting in more and more safe and efficient protocols/systems dedicated to resolving such challenges.
 
-A \textit{merging protocol} \cite{10.1145/3055004.3055028} is one of them. The merging protocol applies for two lanes' vehicles merging into one lane. It bases on vehicle-to-vehicle communications(V2V) system. Authors reported that this protocol is safe and efficient, but V2V system cannot guarantee the network is stable.
+%~\cite{10.1145/3055004.3055028} have proposed the protocol called merging protocol.
+A \textit{merging protocol} \cite{10.1145/3055004.3055028} proposed by S. Aoki and R. Rajkumar is an interaction-based traffic protocol for safely cross a merge point, which is the intersection of 2 one-way lanes merging into one lane. 
+In the protocol, self-driving vehicles are assumed to use both vehicle-to-vehicle (V2V) communications and
+sensor-based perception systems.
+According to the paper, the authors claimed that the protocol is safe and efficient.
 
-Therefore, the protocol needs to be revising.
-We use semaphore instead of using sending or receiving messages to control self-driving vehicles. 
-This revised version allows vehicles to query the controller of the merge point at any time.
-We have conducted some case studies in which our revised protocol in Maude, a rewriting logic-based specification/programming language, and model checked with the Maude model checking facilities (a reach- ability analyzer and an LTL model checker).
+In the present paper, our target aims to formally check that the merging protocol enjoys some desired properties or not. For example, we are most interested in the mutual exclusion (or non-collision) property, which says that is not more than one vehicle located at the merge point at any time.
+This property is really important since if two self-driving vehicles are allowed to enter the merge point simultaneously, they will collide with each other, leading to an accident.
+However, we first revise the protocol to make our version distinguish from the original \textit{merging protocol} in \cite{10.1145/3055004.3055028} by abstract some concepts.
+For example, we use semaphore instead of using sending or receiving messages to control self-driving vehicles. 
+We also allow vehicles to make a query to the controller of the merge point at any time.
+Then, we formally specify the protocol in Maude~\cite{Clavel2007LNCS}, a rewriting logic-based specification/programming, and conduct model checking to confirm that whether the protocol enjoys our desired properties.
+The experiment with six vehicles participating shows that the protocol enjoys the mutual exclusion property.
 
-The rest of the paper is organized as  follows. Sect.\,\ref{sect_Prel}
+The rest of this paper is organized as follows. Sect.\,\ref{sect_Prel}
 mentions some preliminaries such as state machines, and Maude.
 Sect.\,\ref{sect_oriproto} introduces the \textit{Autonomous Vehicle Protocol for Merge Points} protocol.
-Sect.\,\ref{sect_reviproto} describes the reasons why we propose the revised protocol and its introduction.
+Sect.\,\ref{sect_reviproto} describes our revised version of the protocol.
 In Sect.\,\ref{sect_formal}, we specify our proposed protocol in Maude and model check some properties in Sect.\,\ref{sect_model}.
 Sect.\,\ref{sect_Relate} mentions some related work.
 Finally, we conclude the present paper in Sect.\,\ref{concl_sect}.
 
-
+The specification of the protocol in Maude presented in this
+paper is available at \url{http://}.
 
 
 \section{Preliminaries}
  \label{sect_Prel}
  
  
-A state machine $M$ $\triangleq \langle S, I, T \rangle$ consists of a
-set $S$ of states, a set $I \subseteq S$ of initial states, and a
-binary relation $T \subseteq S \times S$ over states.  $(s, s') \in T$
-is called a state transition and may be written as $s \rightarrow_M
-s'$.  The set $R \subseteq S$ of reachable states with respect to $M$
-is inductively defined as follows: (1) for each $s \in I$, $s \in R$
-and (2) for each $(s,s') \in T$, if $s \in R$, then $s' \in R$. A
-state predicate $p$ is an invariant property with respect to ${M}$ if
-and only if $p(s)$ holds for all $s \in R$.  A finite sequence $s_0,
-\ldots , s_i, s_{i+1},\ldots , s_n$ of states is called a finite
-computation of $M$ if $s_0 \in I$ and $(s_i, s_{i+1}) \in T$ for each
-$i = 0, \ldots , n - 1$.
+A Kripke structure $K$ is $\langle S,I,T,P,L \rangle$, where $S$ is a set
+of states, $I \subseteq S$ is the set of initial states, $T \subseteq S \times S$
+is a total binary relation over $S$, $P$ is a set of atomic
+propositions and $L$ is a labeling function whose type is
+$S \rightarrow 2^P$ . Each element $(s, s') \in T$ is called a state transition
+from $s$ to $s'$ and $T$ may be called the state transitions
+(with respect to $K$). For a state $s \in S$, $L(s)$ is the set
+of atomic propositions that hold in $s$. A path $\pi$ is an infinite
+sequence $s_0, \ldots , s_i, s_{i+1}, \ldots$ of states such that $s_i \in S$ and
+$(s_i, s_{i+1}) \in T$ for each $i$. Let $\pi^i$ be $s_i, s_{i+1}, \ldots$ and $\pi(i)$ be
+$s_i$. Let $P$ be the set of all paths. $\pi$ is called a computation
+if $\pi(0) \in I$. Let $C$ be the set of all computations.
 
-In this paper, to express a state of $S$, we use a braced
-associative-commutative collection of name-value
-pairs. Associative-commutative collections are called soups, and
-name-value pairs are called observable components. That is, a state is
-expressed as a braced soup of observable components.  The
-juxtaposition operator is used as the constructor of soups. Let $oc1,
-oc2, oc3$ be observable components, and then $oc1\ oc2\ oc3$ is the
-soup of those three observable components. A state is expressed as
-$\{oc1\ oc2\ oc3\}$. There are multiple possible ways to specify state
-transitions.  In this paper, we use Maude~\cite{Clavel2007LNCS}, a
-programming/specification language based on rewriting logic, to
-specify them as rewrite rules.  Maude makes it possible to specify
-complex systems flexibly and is also equipped with model checking
-facilities (a reachability analyzer and an LTL model checker).
+The syntax of a formula $\varphi$ in LTL for $K$ is $\varphi ::= \top \:|\: p \:|\: \neg \varphi \:|\: \varphi \land \varphi \:|\: \bigcirc \varphi \:|\: \varphi \: \mathcal{U} \: \varphi$, where $p \in P$. 
+Let $\cal F$ be the set of all formulas in LTL for $K$. 
+An arbitrary path $\pi \in P$ of $K$ and an arbitrary LTL formula $\varphi \in \cal F$ of $K$,
+$K, \pi \models \varphi$ is inductively defined as $K, \pi \models \top$, $K, \pi \models p$ iff
+$p \in L(\pi(0))$, $K, \pi \models \neg \varphi_1$ iff $K, \pi \not\models \varphi_1$, 
+$K, \pi \models \varphi_1 \land \varphi_2$ iff
+$K, \pi \models \varphi_1$ and $K, \pi \models \varphi_2$, 
+$K, \pi \models \bigcirc \ \varphi_1$ iff $K, \pi^1\models \varphi1$,
+and $K, \pi \models \varphi_1 \: \mathcal{U} \: \varphi_2$ iff there exists a natural number $i$
+such that $K, \pi^i\models \varphi_2$ and for all natural numbers $j < i$,
+$K, \pi^j \models \varphi_1$, where $\varphi_1$ and $\varphi_2$ are LTL formulas. 
+Then,
+$K \models \varphi$ iff $K, \pi \models \varphi$ for each computation $\pi \in C$ of $K$. 
+The temporal connectives $\bigcirc$ and $\mathcal{U}$ are called the next connective
+and the until connective, respectively. The other logical
+and temporal connectives are defined as usual as follows:
+$\bot \triangleq \neg\top$, 
+$\varphi_1 \lor \varphi_2 \triangleq \neg(\neg\varphi_1 \land \neg\varphi_2)$, 
+$\varphi_1 \Rightarrow \varphi_2 \triangleq \neg\varphi_1 \lor \varphi_2$,
+$\lozenge \varphi \triangleq \top \ \mathcal{U}\ \varphi$, 
+and $\square \varphi \triangleq \neg(\lozenge \neg\varphi)$. 
+The temporal connectives $\lozenge$ and $\square$ are called the eventually connective and the always connective, respectively.
+
+
+%There are multiple possible ways to express states. We
+%express a state as a braced associative-commutative (AC)
+%collection of name-value pairs. AC collections are called
+%soups, and name-value pairs are called observable components. That is, a state is expressed as a braced soup of
+%observable components. 
+
+In this paper, to express a state of $S$, we use an associative-commutative collection of name-value pairs. Associative-commutative collections are called soups, and name-value pairs are called observable components. That is, a state is expressed as a soup of observable components.
+The juxtaposition operator is used
+as the constructor of soups. Let $oc1, oc2, oc3$ be observable components, and then 
+$oc1\ oc2\ oc3$ is the soup of
+those three observable components. A state is expressed
+as $\{oc1\ oc2\ oc3\}$. There are multiple possible ways to
+specify state transitions. 
+In this paper, we use Maude~\cite{Clavel2007LNCS}, a programming/specification
+language based on rewriting logic, to specify them as rewrite rules.
+Maude makes it possible
+to specify complex systems flexibly and is also equipped
+with model checking facilities (a reachability analyzer and
+an LTL model checker). 
 %A conditional rewrite rule (or just
 %a rule) is in the form \verb!crl! [$lb$] : $l => r if \ldots /\backslash c_i /\backslash \ldots$ , 
 %where $lb$ is the label given to the rule and $c_i$ is part
 %of the condition, which may be an equation $lc_i = rc_i$. 
 %The negation of lci = rci could be written as $(lc_i$ =/= $rc_i) =$ \verb!true!, where \verb!= true! could be omitted. 
-A rewrite rule starts with the keyword \verb!rl!, followed by a label
-enclosed with square brackets and a colon, two patterns (terms that
-may contain variables) connected with =\textgreater, and ends with a
-full stop. A conditional one starts with the keyword \verb!crl! and
-has a condition following the keyword \verb!if! before a full stop.
+A rewrite rule starts with the keyword \verb!rl!, followed by a label enclosed with square brackets and a colon, two patterns (terms that may contain variables) connected with =\textgreater, and ends with a full stop. A conditional one starts with the keyword \verb!crl! and has a condition following the keyword \verb!if! before a full stop.
 The following is a form of a conditional rewrite rule:
 
 \smallskip
@@ -541,11 +580,10 @@ The following is a form of a conditional rewrite rule:
 \smallskip
 
 \noindent
-where $lb$ is a label and $c_i$ is part of the condition, which may be
-an equation $lc_i = rc_i$ or a matching equation $lc_i := rc_i$.  The
-negation of $lc_i = rc_i$ could be written as $(lc_i =$\verb!/!$=
-rc_i) =$ \verb!true!, where \verb!= true! could be omitted.  
-
+where $lb$ is a label and $c_i$ is part of the condition, which may be an equation $lc_i = rc_i$. 
+The negation of $lc_i = rc_i$ could be written as $(lc_i =$\verb!/!$= rc_i) =$ \verb!true!, where \verb!= true! could be omitted. 
+If the condition
+$\ldots$ \verb!/\ !$c_i$ \verb!/\ !$\ldots$ holds under some substitution $\sigma$, $\sigma(l)$ can be replaced with $\sigma(r)$.
 
 Maude provides the search command that allows finding a state reachable from
 $t$ such that the state matches $p$ and satisfies condition(s) $c$:
@@ -564,7 +602,21 @@ bound on the number of desired solutions and the maximum depth of the
 search, respectively.  \verb!n! typically is 1 and $t$ typically
 represents an initial state of the state machine.
 
+ Let \verb!init! be the only initial state of $K$ and $\varphi$ be an LTL
+ formula. Then, the Maude LTL model checker checks that
+ $K$ satisfies $\varphi$ by the following command:
  
+ \smallskip
+ \begin{small}
+ 	\noindent
+ 	\verb!red modelCheck(init,!$\varphi$\verb!) .!
+ \end{small}
+ \smallskip
+ 
+ \noindent
+ where \verb!red! is an abbreviation of \verb!reduce!. 
+ Executing this command, Maude will return either true if $\varphi$ is satisfied, or a counterexample when $\varphi$ is not satisfied.
+
 
  
 \section{Autonomous Vehicle Protocol for Merge Points}
