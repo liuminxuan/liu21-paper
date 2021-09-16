@@ -294,10 +294,10 @@ mod MTAS15-PREDS is
   pr MTAS15 .
   inc SATISFACTION .
   subsort Config < State .
-  ops fin : -> Prop .
+  ops Fin : -> Prop .
   var OCs : Soup{OComp} .
   var PROP : Prop .
-  eq {(gstat: fin) OCs} |= fin = true .
+  eq {(gstat: fin) OCs} |= Fin = true .
   eq {OCs} |= PROP = false [owise] .
 endm
 
@@ -306,7 +306,7 @@ mod MTAS15-CHECK is
   inc MODEL-CHECKER .
   inc LTL-SIMPLIFIER .
   op halt  : -> Formula .
-  eq halt = <> fin .
+  eq halt = <> Fin .
 endm
 
 red in MTAS15-CHECK : modelCheck(init,halt) .
