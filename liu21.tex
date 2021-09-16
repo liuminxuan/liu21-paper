@@ -804,7 +804,7 @@ Each arrow represents the change of vehicle's status from one value to another v
 \label{throughLaneStatus}
 \end{figure}
 
-Conditions denoted by numbers are as follows:
+Transitions are explained as follows:
 \begin{enumerate}[]
     \item the vehicle is approaching the merge point. %1
     \item there is no vehicle crossing the merge point and the system is in a fully-prioritized state. %2
@@ -853,7 +853,7 @@ In Fig.~\ref{space} (c) and Fig.~\ref{space} (d), the vehicle \textcircled{1} en
 \end{figure}
 
 Fig.~\ref{nonThroughLaneStatus} shows the transition of a non-through lane vehicle's status.
-Conditions are represented by numbers as follows:
+Transitions are explained as follows:
 \begin{itemize}
     \item[a)] the vehicle is approaching the merge point. %1
     \item[b)] there exists a through lane vehicle that is approaching the merge point, and the system is not in a fair state. %2
@@ -903,7 +903,7 @@ To formalize the protocol, we use four observable components as follows:
 \begin{itemize}
     \item (\verb!v[!$id$\verb!]:!$position$\verb!,!$vstat$) - $id$ is an ID (a nature number) of a vehicle or a space, $position$ is the lane that the vehicle or the space $id$ is located (either through lane or non-through lane), $vstate$ is the status of the vehicle if it is a vehicle. Initially, $vstate$ is \verb!space! if it is a space, or \verb!running! if it is a vehicle.
     \item (\verb!lane[!$position$\verb!]:!$q$) - $position$ is the through lane or non-through lane, and $q$ is a queue of vehicles and spaces. Initially, $q$ is \verb!empq!, which denotes an empty queue.
-    \item (\verb!switch:!$c$\verb!,!$semi$\verb!,!$fair$\verb!,!$nonthrough$\verb!,!$nthrough$) - $c$ receives one of the following two values: \verb!vehicleCrossing! indicating there is not any vehicle crossing the merge point, or \verb!noVehicleCrossing! indicating there exists a vehicle crossing the merge point.
+    \item (\verb!switch:!$c$\verb!,!$semi$\verb!,!$fair$\verb!,!$nonthrough$\verb!,!$nthrough$) - $c$ receives one of the following two values: \verb!noVehicleCrossing! indicating there is not any vehicle crossing the merge point, or \verb!vehicleCrossing! indicating there exists a vehicle crossing the merge point.
     $semi$ receives one of the following two values: \verb!semiPrioritized! indicating the system is in a semi-prioritized state, or \verb!noSemiPrioritized! indicating the system is in a fully-prioritized state. 
     $fair$ receives one of the following three values: \verb!noFair! indicating the system is not in a fair state, or \verb!fairT! indicating the system is in a fair state and it is the through lane vehicle's turn, or \verb!fairN! indicating the system is in a fair state and it is the non-through lane vehicle's turn.
     $nonthrough$ receives one of the following two values: \verb!noVeInNTLane! indicating there is not any non-through lane vehicle approaching the merge point, or \verb!veInNTLane! indicating there exists a non-through lane vehicle approaching the merge point. 
@@ -913,71 +913,58 @@ To formalize the protocol, we use four observable components as follows:
 	When it is \verb!fin!, all vehicles concerned have crossed the intersection.
 \end{itemize}
 
-Let us consider a case such that the vehicle approaches the merge point, the status of the vehicle changes from the \verb!running! status to the \verb!approaching! status. 
-This case corresponds to condition 1 of two lanes.
-We use four rules to specify this case in which
+We use 22 rewrite rules to define the transitions of the protocol.
+%Let us consider a case such that the vehicle approaches the merge point, the status of the vehicle changes from the \verb!running! status to the \verb!approaching! status. 
+%This case corresponds to condition 1 of two lanes.
+%We use four rules to specify this case in which
 %We use four rules to specify this process. 
-two rules for the through lane and two rules for the non-through lane.
+%two rules for the through lane and two rules for the non-through lane.
+The following two rules are defined to specify a set of transitions that
+change a vehicle status from \verb!running! to \verb!approaching!, one for through lane vehicles, and another for non-through lane vehicles: 
 
-
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
-crl [approach_T1] : 
-{(gstat: nFin) 
+crl [approach_T] : {(gstat: nFin) 
 (switch: B1,B2,B3,B4,numOfVeInTLane) 
-(lane[L]: empq) (v[VI]: L,running) OCs} 
+(lane[L]: VS) (v[VI]: L,running) OCs} 
 => {(gstat: nFin) 
 (switch: B1,B2,B3,B4,(numOfVeInTLane + 1)) 
-(lane[L]: VI) (v[VI]: L,approaching) OCs} 
-if L == Through .
-
-crl [approach_T2] : 
-{(gstat: nFin) 
-(switch: B1,B2,B3,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI']: L,running) OCs} 
-=> {(gstat: nFin) 
-(switch: B1,B2,B3,B4,(numOfVeInTLane + 1)) 
-(lane[L]: (VI ; VS ; VI')) 
-(v[VI']: L,approaching) OCs} 
-if L == Through .
-
-crl [approach_N1] : 
-{(gstat: nFin) 
-(switch: B1,B2,B3,B4,B5) 
-(lane[L]: empq) (v[VI]: L,running) OCs} 
-=> {(gstat: nFin) 
-(switch: B1,B2,B3,veInNTLane,B5) 
-(lane[L]: VI) (v[VI]: L,approaching) OCs} 
-if L == Nothrough .
-
-crl [approach_N2] : 
-{(gstat: nFin) 
-(switch: B1,B2,B3,B4,B5) 
-(lane[L]: (VI ; VS)) (v[VI']: L,running) OCs} 
-=> {(gstat: nFin) (switch: B1,B2,B3,
-veInNTLane,B5) 
-(lane[L]: (VI ; VS ; VI')) 
-(v[VI']: L,approaching) OCs} 
-if L == Nothrough .
+(lane[L]: (VS ; VI)) (v[VI]: L,approaching) 
+OCs} if L == Through .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
+\begin{small}
+\begin{verbatim}
+crl [approach_N] : {(gstat: nFin) 
+(switch: B1,B2,B3,B4,numOfVeInTLane) 
+(lane[L]: VS) (v[VI]: L,running) OCs} 
+=> {(gstat: nFin) 
+(switch: B1,B2,B3,veInNTLane,numOfVeInTLane) 
+(lane[L]: (VS ; VI)) (v[VI]: L,approaching) 
+OCs} if L == Nothrough .
+\end{verbatim}
+\end{small}
+
+\noindent 
+where \verb!B1!, \verb!B2!, \verb!B3!, \verb!B4!, and \verb!B5! are Maude variables of sort \verb!Swich!, receiving the values \verb!noVehicleCrossing! or \verb!vehicleCrossing!, \verb!semiPrioritized! or \verb!noSemiPrioritized!, \verb!noFair! or \verb!fairT! or \verb!fairN!, \verb!noVeInNTLane! or \verb!veInNTLane!, respectively.
+\verb!VI! and \verb!VI'! are Maude variable of natural numbers, denoting arbitrary vehicle IDs. 
+\verb!VS! is a Maude variable of queues, possibly empty.
+\_;\_ is the constructor of queues, where an underscore \_ is
+a place holder where an argument (e.g., vehicle ID) is put. 
+The first rewrite rule says that when the through lane has a vehicle whose status is \verb!running!, the status is changed to \verb!approaching!, the vehicle is enqueue into the queue of the through lane, and the value of the last component of \verb!swich! (\verb!numOfVeInTLane!) is increment.
+%It means that \textit{(q1 ; q2) ; q3 = q1 ; (q2 ; q3)}. 
+%\verb!empq! represents the queue is empty. 
+%\verb!(numOfVeInTLane)! in the \verb!switch! means the length of queue on through lane (only count vehicle).
+%%From \verb![approach_T1]! and \verb![approach_T2]! rules, \verb!(numOfVeInTLane + 1)! in the \verb!switch! means the size of queue which represent vehicle on through lane add 1. 
+%\verb!VeInNTLane! in the \verb!switch! means the queue of the non-through lane is not empty. 
+%Notice, vehicles whose status are \verb!running! cannot be counted in the queue (both lanes).
+%
+%We use the following states to express conditions of both lanes mentioned in~\ref{sect_reviproto} as follows:
 
 
-
-\noindent \verb!B1!, \verb!B2!, \verb!B3!, \verb!B4!, \verb!B5! are Maude variable for arbitrary variables  of \verb!Swich!. 
-\verb!VI! and \verb!VI'! are Maude variable of natural numbers. 
-\verb!VS! is a Maude variable of queues of natural numbers or empty.
-\_;\_ is the construction of the queue which is associative. 
-It means that \textit{(q1 ; q2) ; q3 = q1 ; (q2 ; q3)}. 
-\verb!empq! represents the queue is empty. 
-\verb!(numOfVeInTLane)! in the \verb!switch! means the length of queue on through lane (only count vehicle).
-%From \verb![approach_T1]! and \verb![approach_T2]! rules, \verb!(numOfVeInTLane + 1)! in the \verb!switch! means the size of queue which represent vehicle on through lane add 1. 
-\verb!VeInNTLane! in the \verb!switch! means the queue of the non-through lane is not empty. 
-Notice, vehicles whose status are \verb!running! cannot be counted in the queue (both lanes).
-
-We use the following states to express conditions of both lanes mentioned in~\ref{sect_reviproto} as follows:
-
-
+The remaining rewrite rules are divided into four groups: a vehicle tries to enter the merge point when the system is in a fully-prioritized state; a vehicle tries to enter the merge point when the system is in a semi-prioritized state; a vehicle leaves the merge point when the system is in a fully-prioritized or semi-prioritized state;
+when the system is in a fair state.
+	
 \begin{figure*}[tb]
 \begin{center}
 \scalebox{0.35}{\includegraphics{Pictures/fullySim.pdf}}
@@ -986,152 +973,158 @@ We use the following states to express conditions of both lanes mentioned in~\re
 \label{fully_fig}
 \end{figure*}
 
-\subsection{Fully-prioritized state}
+\subsection{A vehicle tries to enter the merge point when the system is in a fully-prioritized state}
 
-Let us consider the fully-prioritized state in which there are two vehicles on through lane and one vehicle on non-through lane shown in Fig.~\ref{fully_fig}. 
+Let us consider a concrete fully-prioritized state in which there are two through lane vehicles and one vehicle running on the non-through lane as shown in Fig.~\ref{fully_fig}. 
 The initial state shown in Fig.~\ref{fully_fig} (a) is expressed as follows:
 %Initially, the through lane and non-through lane both have one vehicle running on them. Here, the initial state is expressed as follows:
  
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
-{(gstat: nFin) 
-(lane[Through]: empq) (lane[Nothrough]: empq) 
-(v[1]: Through,running) (v[2]: Through,running)
+{(gstat: nFin) (lane[Through]: empq) 
+(lane[Nothrough]: empq) 
+(v[1]: Through,running) 
+(v[2]: Through,running)
 (v[3]: Nothrough,running)
 (switch: noVehicleCrossing,noSemiPrioritized,
 noFair,noVeInNTLane,0)} .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
 %\noindent \verb!v[1]! and \verb!v[2]! observable components represent two vehicles. 
 %One of them is running on the through lane, the other one is running on the non-through lane. The observable component of \verb!switch! means no vehicle is crossing the merge point and the whole self-driving system is either in Semi-prioritized state or Fair state. \verb!noVeInNTLane! and \verb!0! show the queue of two lanes are empty.
 
-We use the rules \verb!full_T_crossing! to express the condition 2 of through lane, \verb!full_N_stop!, \verb!full_N_crossing1! and \verb!full_N_crossing2! for condition 2, 3 and 5, respectively. 
-Fig.~\ref{fully_fig} (b) and (c) is an example for the rule \verb!full_T_crossing!, while Fig.~\ref{fully_fig} (d) and (e) refers the rule \verb!full_N_crossing2!.
-Those rules are specified in Maude as follows:
+Three rewrite rules are introduced in this case.
+The first one \verb!full_T_crossing! specifies the set of transitions 2) explained in the previous section.
+That is a through lane vehicle is allowed to pass the merge point is there is no vehicle crossing the merge point and the system is in a fully-prioritized state.
+Fig.~\ref{fully_fig} (b) and (c) graphically visualize this kind of transition.
+The rewrite rule is defined as follows:
 %Condition 2 of the through lane is shown by rule \verb![full_T_crossing]!:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
 crl [full_T_crossing] : {(gstat: nFin) 
 (switch: noVehicleCrossing,noSemiPrioritized,
-noFair,B4,B5) 
-(lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
-=> {(gstat: nFin) (switch: vehicleCrossing,
-noSemiPrioritized,noFair,B4,B5) 
+noFair,B4,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,approaching) 
+OCs} 
+=> {(gstat: nFin) 
+(switch: vehicleCrossing,noSemiPrioritized,
+noFair,B4,numOfVeInTLane) 
 (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
 if L == Through .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-%\noindent Condition 2 of the non-through lane is specified by Maude as follow:
-\begin{footnotesize}
+
+The second rewrite rule \verb!full_N_stop! specifies the set of transitions b) explained in the previous section.
+That is a non-through lane vehicle which is approaching the merge point must stop right before the intersection if there exists a through lane vehicle that is approaching the merge point, and the system is not in a fair state. 
+The rewrite rule is defined as follows:
+
+\begin{small}
 \begin{verbatim}
-crl [full_N_stop] : 
-{(gstat: nFin) 
+crl [full_N_stop] : {(gstat: nFin) 
 (switch: B1,B2,noFair,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
-=> {(gstat: nFin) 
+(lane[L]: (VI ; VS)) (v[VI]: L,approaching) 
+OCs}
+=> {(gstat: nFin)
 (switch: B1,B2,noFair,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI]: L,stopped) OCs} 
+(lane[L]: (VI ; VS)) (v[VI]: L,stopped) OCs}
 if L == Nothrough /\ numOfVeInTLane > 0 .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-%\noindent Condition 3 and 5 explain how vehicle moves from approaching status to crossing status in Fully-prioritized state.
-%They are specified as follows by Maude:
+The third rewrite rule \verb!full_N_crossing! specifies the set of transitions c) and e) explained in the previous section.
+That is a non-through lane vehicle whose status is \verb!approaching! or \verb!stopped! is allowed to enter the merge point
+if there is no vehicle on the through lane that is approaching the merge point, and the system is not in a fair state.
+Fig.~\ref{fully_fig} (d) and (e) visualize this kind of transition.
+The rewrite rule is defined as follows:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
-crl [full_N_crossing1] : 
-{(gstat: nFin) 
+crl [full_N_crossing] : {(gstat: nFin) 
 (switch: noVehicleCrossing,noSemiPrioritized,
-noFair,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI]: L,approaching) OCs} 
+noFair,B4,0) 
+(lane[L]: (VI ; VS)) (v[VI]: L,VeSt) OCs} 
 => {(gstat: nFin) 
 (switch: vehicleCrossing,noSemiPrioritized,
-noFair,B4,numOfVeInTLane) 
+noFair,B4,0) 
 (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs}
- if L == Nothrough /\ numOfVeInTLane == 0 .
- 
-crl [full_N_crossing2] : {(gstat: nFin) 
-(switch: noVehicleCrossing,noSemiPrioritized,
-noFair,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI]: L,stopped) OCs} 
-=> {(gstat: nFin) 
-(switch: vehicleCrossing,noSemiPrioritized,
-noFair,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs}
-if L == Nothrough /\ numOfVeInTLane == 0 .
+if L == Nothrough /\ 
+(VeSt == approaching or VeSt == stopped) .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-\noindent Let us consider the rule \verb!full_N_stop! for condition 2 of non-through lane, vehicle on non-through lane must stop if there exists at least one vehicle on through lane and the system is not in fair state.
-We change the status of vehicle \verb!VI! on top queue to \verb!stopped! from \verb!approaching! when \verb!numofVeInTLane! is greater than \verb!0! and the second value of \verb!switch! is \verb!noFair!.
-The other rules work similarly.
-
-
-
+\noindent
+where \verb!VeSt! is Maude variable of sort \verb!VStat!, denoting arbitrary vehicle status.
 
 \subsection{Semi-prioritized state}
 
 %We proposed that observable component of (\verb!v[!$id$\verb!]: !$position$\verb!,!$vstat$) is a vehicle or space. 
-As mentioned in~\ref{semi-case}, in the semi-prioritized state, a space appears in through lane.
-If it is a space on the non-through lane, we delete it because non-through lane initially has lower priority than the through lane.
-We use the following rule to specify this situation in Maude.
+%As mentioned in section~\ref{semi-case}, when the system is in a semi-prioritized state, a space appears in through lane.
+%If it is a space on the non-through lane, we delete it because non-through lane initially has lower priority than the through lane.
+%We use the following rule to specify this situation in Maude.
+%
+%\begin{footnotesize}
+%\begin{verbatim}
+%crl [semi_N_space2] : 
+%{(gstat: nFin) 
+%(switch: B1,B2,B3,B4,B5) 
+%(lane[L]: (VI ; VS)) (v[VI']: L,space) OCs} 
+%=> {(gstat: nFin) 
+%(switch: B1,B2,B3,B4,B5) 
+%(lane[L]: (VI ; VS)) OCs} 
+%if L == Nothrough .
+%\end{verbatim}
+%\end{footnotesize}
 
-\begin{footnotesize}
+%\noindent On the other side, If it is the space on the through lane, we push the space into the queue of the through lane.
+When the system is in a semi-prioritized state, and there exists a space on the through lane, we push the space into the queue of the through lane.
+
+\begin{small}
 \begin{verbatim}
-crl [semi_N_space2] : 
+crl [semi_T_space] :
 {(gstat: nFin) 
-(switch: B1,B2,B3,B4,B5) 
-(lane[L]: (VI ; VS)) (v[VI']: L,space) OCs} 
+(switch: B1,B2,noFair,B4,numOfVeInTLane) 
+(lane[L]: VS) (v[VI]: L,space) OCs}
 => {(gstat: nFin) 
-(switch: B1,B2,B3,B4,B5) 
-(lane[L]: (VI ; VS)) OCs} 
-if L == Nothrough .
-\end{verbatim}
-\end{footnotesize}
-
-\noindent On the other side, If it is the space on the through lane, we push the space into the queue of the through lane.
-\verb!space! status changes to \verb!yield! status for following the Maude expression.
-
-\begin{footnotesize}
-\begin{verbatim}
-crl [semi_T_space2] : 
-{(gstat: nFin) 
-(switch: B1,B2,noFair,B4,B5) 
-(lane[L]: (VI ; VS)) (v[VI']: L,space) OCs} 
- => {(gstat: nFin) 
- (switch: B1,B2,noFair,B4,B5) 
- (lane[L]: (VI ; VS ; VI')) (v[VI']: L,yield) OCs} 
+(switch: B1,B2,noFair,B4,numOfVeInTLane) 
+(lane[L]: (VS ; VI)) (v[VI]: L,yield) OCs}
 if L == Through .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-When the status of the top of the through lane's queue is \verb!yield!, we change the \verb!noSemiPrioritized! in the \verb!switch! to \verb!semiPrioritized!, it refer that the system moves to the semi-prioritized state.
+\noindent
+The rewrite rule changes
+the status of the vehicle from \verb!space! to \verb!yield!.
+
+When the status of the top vehicle on the through lane's queue is \verb!yield!, the second component of the \verb!switch! observable component changes to \verb!semiPrioritized!, meaning that the system changes to a semi-prioritized state.
+This is done by the following rewrite rule:
 %\noindent When the number which represents yield status is the first element of the through lane's queue, we move the \verb!noSemiPrioritized! in the \verb!switch! to \verb!semiPrioritized!, so that the entire system moves to the Semi-Prioritized state.
-This condition is specified by following rule.
+%This condition is specified by following rule.
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
 crl [semi_T_yield1] : 
 {(gstat: nFin) 
 (switch: noVehicleCrossing,B2,noFair,
 veInNTLane,numOfVeInTLane) 
-(lane[L]: (VI ; VI' ; VS)) (v[VI]: L,yield) OCs} 
+(lane[L]: (VI ; VI' ; VS)) (v[VI]: L,yield) 
+OCs} 
 => {(gstat: nFin) 
 (switch: noVehicleCrossing,semiPrioritized,
 noFair,veInNTLane,numOfVeInTLane) 
 (lane[L]: (VI' ; VS)) OCs} 
 if L == Through .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-\noindent Condition 6 of non-through lane in \textit{a-merging protocol} allows vehicle on non-through lane from \verb!stopped! status moves to \verb!crossing! status because of the semi-prioritized state. 
-It is specified by rule in Maude as follows:
+The rewrite rule \verb!semi_N_crossing! specifies the set of transitions f) explained in the previous section.
+That is a non-through lane vehicle whose status is \verb!stopped! is allowed to enter the merge point
+if the system is in a semi-prioritized state, and there is no vehicle crossing the merge point. 
+The rewrite rule is defined as follows:
 
-\begin{footnotesize}
+\begin{small}
 \begin{verbatim}
 crl [semi_N_crossing] : 
 {(gstat: nFin) 
@@ -1144,50 +1137,69 @@ crl [semi_N_crossing] :
 (lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs}
 if L == Nothrough .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
 
-\subsection{Vehicles' leaving in fully-prioritized and semi-prioritized states}
+There are some more rewrite rules to completely define the set of transition in this case.
+All of them can be found in the webpage shown in the Sect.~\ref{sect_intro}.
 
-Then, let us consider vehicles' leaving of two lanes in fully-prioritized state and semi-prioritized state. 
+\subsection{A vehicle leaves the merge point when the system is in a fully-prioritized or semi-prioritized state}
+%Then, let us consider vehicles' leaving of two lanes in fully-prioritized state and semi-prioritized state. 
 %Firstly, no matter which vehicle crossed, the whole system should return to fully-prioritized state. 
-Firstly, the whole system returns to fully-prioritized if a vehicle has just crossed to the merge point.
-Secondly, we remove one vehicle out of the queue when it crossed and update the number of vehicle on the through lane.
-In non-through lane, \verb!veInNTLane! is changed to \verb!noVeInNTLane! if the last vehicle on non-through lane crossed the merge point.
-The followings rules refer to some cases of vehicle leaving on through lane and non-through lane.
+%Firstly, the whole system returns to fully-prioritized if a vehicle has just crossed to the merge point.
+%Secondly, we remove one vehicle out of the queue when it crossed and update the number of vehicle on the through lane.
+%In non-through lane, \verb!veInNTLane! is changed to \verb!noVeInNTLane! if the last vehicle on non-through lane crossed the merge point.
+%The followings rules refer to some cases of vehicle leaving on through lane and non-through lane.
 %Secondly, we remove one vehicle out of the queue when it crossed, therefore, number of vehicle on the through lane should minus 1 and \verb!switch! should tell us whether ti is the last element in the queue of the non-through lane.
 %Basing on these considerations, we specify vehicle leaving on through lane and non-through lane as follows:
 
 
-\begin{footnotesize}
+%When a vehicle leaving the merge point, it is unqueue from the corresponding queue.
+
+The following rewrite rule specifies a set of transitions when a through lane vehicle leaving the merge point:
+
+\begin{small}
 \begin{verbatim}
-crl [T_leave1] : {(gstat: nFin) 
-(switch: vehicleCrossing,noSemiPrioritized,
-noFair,B4,numOfVeInTLane) 
-(lane[L]: (VI ; VI' ; VS)) (v[VI]: L,crossing) OCs} 
+crl [T_leave] : {(gstat: nFin) 
+(switch: vehicleCrossing,B2,noFair,B4,
+numOfVeInTLane) (lane[L]: (VI ; VS)) 
+(v[VI]: L,crossing) OCs} 
 => {(gstat: nFin) 
-(switch: noVehicleCrossing,noSemiPrioritized,
- noFair,B4,sd(numOfVeInTLane,1)) 
-(lane[L]: (VI' ; VS)) (v[VI]: !(L),crossed) OCs} 
+(switch: noVehicleCrossing,(if VS == empq 
+then noSemiPrioritized else B2 fi),
+noFair,B4,sd(numOfVeInTLane,1)) 
+(lane[L]: VS) (v[VI]: !(L),crossed) OCs} 
 if L == Through .
- 
-crl [N_leave2] : 
-{(gstat: nFin) 
-(switch: vehicleCrossing,B2,
- noFair,veInNTLane,numOfVeInTLane) 
-(lane[L]: (VI ; empq)) (v[VI]: L,crossing) OCs} 
+\end{verbatim}
+\end{small}
+
+\noindent
+The rewrite rule says that when a through lane vehicle leaving the merge point, it is deleted from the queue of the through lane, the first component of observable component \verb!swich! is changed to \verb!noVehicleCrossing!, the last component of it is decrement (i.e., the number of through lane vehicles is decrement), and the second component of it is set to \verb!noSemiPrioritized! (i.e., the system state changes to fully-prioritized) if the queue becomes empty.
+
+The following rewrite rule specifies a set of transitions when a non-through lane vehicle leaving the merge point:
+
+\begin{small}
+\begin{verbatim}
+crl [N_leave] : {(gstat: nFin) 
+(switch: vehicleCrossing,B2,noFair,
+veInNTLane,numOfVeInTLane) 
+(lane[L]: (VI ; VS)) (v[VI]: L,crossing) OCs} 
 => {(gstat: nFin) 
 (switch: noVehicleCrossing,noSemiPrioritized,
-noFair,noVeInNTLane,numOfVeInTLane) 
-(lane[L]: empq) (v[VI]: !(L),crossed) OCs} 
+noFair, (if VS == empq then noVeInNTLane 
+else veInNTLane fi),numOfVeInTLane) 
+(lane[L]: VS) (v[VI]: Through,crossed) OCs} 
 if L == Nothrough .
 \end{verbatim}
-\end{footnotesize}
+\end{small}
+
+\noindent
+The rewrite rule says that when a non-through lane vehicle leaving the merge point, it is deleted from the queue of the non-through lane, the first component of observable component \verb!swich! is changed to \verb!noVehicleCrossing!, the second component of it is set to \verb!noSemiPrioritized! (i.e., the system state changes to fully-prioritized), and the third component of it is set to \verb!noVeInNTLane! (i.e., there is not any vehicle on the non-through lane) if the queue becomes empty.
 
 %\noindent Rule \verb![T_leave1]! shows vehicle on through lane leaving in fully-prioritized state and semi-prioritized state while rule \verb![N_leave2]! shows non-through lane.
-\noindent Rule \verb![T_leave1]! can be applied for the vehicle on through lane leaving in fully-prioritized state and semi-prioritized state; while rule \verb![N_leave2]! for the vehicle on non-through lane as shown in Fig.~\ref{fully_fig} (e) and (f).
+%\noindent Rule \verb![T_leave1]! can be applied for the vehicle on through lane leaving in fully-prioritized state and semi-prioritized state; while rule \verb![N_leave2]! for the vehicle on non-through lane as shown in Fig.~\ref{fully_fig} (e) and (f).
 
 
-\subsection{Fair state}
+\subsection{The system is in a fair state}
 
 The fair state in the \textit{merging protocol} appears when the system finds the traffic is congested, and a vehicle on through lane gives way to non-through lane. 
 In the a-merging protocol, we define the congestion by the number of vehicles as a constant (3 is used in the paper) on through lane. 
