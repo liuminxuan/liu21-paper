@@ -1512,6 +1512,34 @@ We run the Maude command \verb!modelCheck(init, halt)! to check whether the prot
 The program returns no counterexample.
 Therefore, the \textit{a-merging} protocol enjoys the property for the \verb!init!.
 
+\subsection{Starvation freedom}
+To model check that the \textit{a-merging} protocol enjoys the \textit{starvation freedom}, we need to define $P_{a-merging}$ and $L_{a-merging}$. 
+$P_{a-merging}$ consists of one atomic proposition \verb!Fin!.
+$L_{a-merging}$ is defined as follows:
+
+\begin{small}
+\begin{verbatim}
+eq {(gstat: fin) OCs} |= Fin = true .
+eq {OCs} |= PROP = false [owise] .
+\end{verbatim}
+\end{small}
+
+where \verb!PROP! is a Maude variable of atomic propositions, \verb!|=! is a Maude symbol for satisfaction relation in LTL. 
+The two equations mean that for all states $s$ $\in$ $P_{a-merging}L_{a-merging}(s)$ = {\verb!Fin!} if and only if $s$ contains (\verb!gstat : fin!). 
+The \textit{starvation freedom} property is then defined as follows:
+
+\begin{small}
+\begin{verbatim}
+eq halt = <> Fin .
+\end{verbatim}
+\end{small}
+
+\noindent where \verb!<>! is the LTL eventually connective $\diamondsuit$.
+We run the Maude command \verb!modelCheck(init, halt)! to check whether the protocol enjoys the \textit{starvation freedom} property.
+The program returns no counterexample.
+Therefore, the \textit{a-merging} protocol enjoys the property for the \verb!init!.
+
+
  
  
 \section{Related Work}
